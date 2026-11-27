@@ -7,6 +7,8 @@
 - examples/uncertain-order/PURPOSE.md c594e85ae03ceeb46ef12d2956ff9fae803c976e
 - examples/uncertain-order/order.py 39d21a6ec2c021c92beab30cc27a5c512bb51162
 - examples/uncertain-order/test_order.py f2b43f84223f117b315ede01412ac4717c7a1364
-- examples/uncertain-order/handoff-spec.json fe57c256e15b18d2375c4e0c643138eb2d1a6b2a
-- examples/uncertain-order/handoff-manifest.json 8f2981b77163f8339f699279e67b7ecf1dfae9ef
+- examples/uncertain-order/handoff-spec.json 4398074bbd122206f0a235108e970619043eb6cb
+- examples/uncertain-order/handoff-manifest.json 0e7d3f020122da14016290039477ad4aecc6e4d9
 試行は同一AIによるもので独立評価・未知案件比較・実際の別AI再開ではない。独立環境へのコピーはプロトタイプの実行独立性のみを示す。Codex実行環境なし、Git直接接続はDNS失敗。自動適用、権限強制、実際の時刻校正、正式受入は未検証。試作の新規GitHubリポジトリを作成していない。PR #1上で継続しmainは変更しない。
+
+追加検査: handoff-spec.json 自身をcontextに含めた状態で、再度別ディレクトリの試作テスト5/5、verify一致、定義ファイル変更後の検出と終了コード2を確認。manifest自身は対象外。

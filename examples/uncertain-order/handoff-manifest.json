@@ -9,7 +9,8 @@
       "AGENTS.md",
       "PURPOSE.md",
       "order.py",
-      "test_order.py"
+      "test_order.py",
+      "handoff-spec.json"
     ],
     "next_actions": [
       "Review local requirements and run prototype tests",
@@ -23,6 +24,7 @@
     "AGENTS.md": "d0172ce348ef912e10fae18556cde0c767e4fe5413b40e5e13858df388617bbb",
     "PURPOSE.md": "f148b7d2b042db386a25baad949796976a72e371cbed4b6ac74747faf74ddddc",
     "order.py": "3f069f6083162278d6193d2962266588b8ea56f8302eb7882a369e40c8cbb4ac",
-    "test_order.py": "46b1bd16445d066935fdad0b29f6a194c817cd7c91bc648f1f50a5d2d996905d"
+    "test_order.py": "46b1bd16445d066935fdad0b29f6a194c817cd7c91bc648f1f50a5d2d996905d",
+    "handoff-spec.json": "6635bb585f29876845fe2d26bfbf4d70862bfc62848c6214be7b24f38116984d"
   }
 }
