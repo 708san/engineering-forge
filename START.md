@@ -21,3 +21,5 @@ ChatGPT/Codex 共通の開始・生成・継続開発手順は `bootstrap/portab
 引き継ぎと内容の変化の確認には、必要に応じて `bootstrap/handoff.md` を利用する。基盤を常時参照しなくても対象内の入口と正本から再開できるよう設計する。
 
 ローカルGitが利用でき、実際の書き込み許可がある場合は `bootstrap/integration.md` に従って新規統合ブランチを作成できる。継続開発で変更の影響を確認するときは `bootstrap/change-impact.md` を任意利用する。ツールがない場合も仕様・候補・次の作業を渡し、実施済みと偽らない。
+
+利用者向けの簡潔な入口は `bootstrap/quickstart.md`。AIによる新規案件の試用・別セッション評価は `evaluation/first-use.md` を参照（未実施）。
