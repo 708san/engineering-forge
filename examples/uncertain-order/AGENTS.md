@@ -1,0 +1,2 @@
+# Uncertain Order — development entry
+Read PURPOSE.md and handoff-spec.json. Keep uncertainty visible; never sort overlapping possible times into a claimed event order. The prototype is local and offline; do not add network use or publish data without authority. One developer role suffices for this experiment. Verify via `python -m unittest -v test_order`. Change proposals that weaken the uncertainty requirement must be separated from implementation. Review actual evidence and update the handoff after changes. This is a synthetic demonstration, not a human-approved product.

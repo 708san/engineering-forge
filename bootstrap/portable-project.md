@@ -1,5 +1,5 @@
 # ChatGPT・Codex 共通のプロジェクト立ち上げと継続開発
-状態: v0.8-dev 試用手順。ネイティブ Skills 読込・自動適用は未検証。
+状態: v0.9-dev 試用手順。ネイティブ Skills 読込・自動適用は未検証。
 
 ## 開始
 ユーザーの指示例: 「https://github.com/708san/engineering-forge の START.md を読んで、次の構想に適した開発体制を設計し、許可された範囲で開発を始めてください。構想: ...」
@@ -34,3 +34,5 @@ OpenAI公式: https://help.openai.com/en/articles/11145903-connecting-github-to-
 https://developers.openai.com/plugins/concepts/skills （Skillsの概念）
 https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex （リポジトリ指示・Skills）
 機能の提供状況・権限は実環境で確認する。
+
+任意の構造化引き継ぎ検査: `bootstrap/handoff.md`。内容一致のみでは正式な承認、実行、Git版、全情報の完全性を保証しない。
