@@ -1,4 +1,4 @@
-# Engineering Forge — 利用開始入口（v0.9-dev）
+# Engineering Forge — 利用開始入口（v0.10-dev）
 この文書は設計試用の入口。URL参照だけでインストール・実行・承認が成立するわけではない。
 
 ## AIへの指示例
@@ -14,8 +14,10 @@
 
 この版は設計試用候補。本番の自動適用、権限強制、AI生成性能は未検証。`self/plan.md` は基盤自身の作業計画であり、他プロジェクトへの強制テンプレートではない。
 
-生成候補の読み取り専用プレビュー: python3 forge_preview.py CANDIDATE TARGET。競合がある場合は適用せず統合案を検討する。自動適用は未実装。
+生成候補の読み取り専用プレビュー: python3 forge_preview.py CANDIDATE TARGET。競合がある場合は適用せず統合案を検討する。既存作業ツリーへの自動適用は未実装。
 
 ChatGPT/Codex 共通の開始・生成・継続開発手順は `bootstrap/portable-project.md` を参照。生成後は対象リポジトリの入口を利用する。
 
 引き継ぎと内容の変化の確認には、必要に応じて `bootstrap/handoff.md` を利用する。基盤を常時参照しなくても対象内の入口と正本から再開できるよう設計する。
+
+ローカルGitが利用でき、実際の書き込み許可がある場合は `bootstrap/integration.md` に従って新規統合ブランチを作成できる。継続開発で変更の影響を確認するときは `bootstrap/change-impact.md` を任意利用する。ツールがない場合も仕様・候補・次の作業を渡し、実施済みと偽らない。

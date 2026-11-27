@@ -2,7 +2,7 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.9-dev（開発中、正式リリース・受入未完了）。**
+**状態: v0.10-dev（開発中、正式リリース・受入未完了）。**
 
 ## 利用開始
 [START.md](START.md) を AI に読ませ、自由記述の構想または既存リポジトリを伝える。AI が必要な方法、役割、品質基準、技術・開発環境を考案する。既存分類や固定カタログへの一致を要求しない。
@@ -39,3 +39,6 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## 継続開発の引き継ぎ
 [引き継ぎ検査](bootstrap/handoff.md) は任意のプロジェクト内ファイルの内容変化を検出する。対象の運用には必須ではない。`examples/uncertain-order/` に独立動作する試作例を収録。独立AIへの引き継ぎは未検証。
+
+## 新規導入・更新と変更影響
+[Git統合ブランチへの導入](bootstrap/integration.md) と [変更影響検査](bootstrap/change-impact.md) を追加。ローカルでの任意補助機能であり、GitHubへの自動Pushや自動マージ、保護要求の承認を行わない。基盤本体の試験は Git と Python 3.11以上、requirements-validator.txt の依存を準備して `python3 -B -m unittest discover -s tests -v`。ChatGPTが実行できない場合は候補・計画・未実施事項を渡す。
