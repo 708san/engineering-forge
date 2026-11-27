@@ -16,3 +16,5 @@ GitHub連携や取得機能で基盤・対象を読む。通常の読み取り�
 5. 次のセッションでは「このプロジェクトの入口・正式仕様・現状を確認して、開発を続けて」と指示。必要に応じて handoff.md / change-impact.md を利用する。通常の継続開発には基盤本体への接続は不要。
 ## AIが利用する任意ツール
 利用者が毎回コマンドを入力する必要はない。実行環境と権限の範囲でAIが使う。構造・要求比較 forge_validate.py、差分 forge_preview.py、導入候補 forge_integrate.py、引き継ぎ forge_handoff.py、変更影響 forge_impact.py。生成・実機読み込み・テスト・正式採用・権限強制を混同しない。
+
+共通コマンド `python3 forge.py doctor --target TARGET`（対象未作成時は --target なし）でローカルの存在確認を行える。`python3 forge.py --help` から preview / validate / handoff / integrate / impact を呼べる。各コマンドの引数は元のスクリプトと同じ。ネットワーク、GitHub書き込み、ネイティブSkills、操作承認は別途確認する。doctorの終了0は観測出力成功であり、開発準備完了ではない。

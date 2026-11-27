@@ -44,3 +44,6 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## 新規導入・更新と変更影響
 [Git統合ブランチへの導入](bootstrap/integration.md) と [変更影響検査](bootstrap/change-impact.md) を追加。ローカルでの任意補助機能であり、GitHubへの自動Pushや自動マージ、保護要求の承認を行わない。基盤本体の試験は Git と Python 3.11以上、requirements-validator.txt の依存を準備して `python3 -B -m unittest discover -s tests -v`。ChatGPTが実行できない場合は候補・計画・未実施事項を渡す。
+
+## 共通コマンド（任意）
+`python3 forge.py doctor` でローカル環境の観測結果を取得し、`python3 forge.py --help` で補助コマンドを確認できる。実行可能ファイルが見つかったことと、実際の利用権限・Skills読込・準備完了は別であり、doctorは後者を未検証と表示する。GitHub ActionsはLinux/macOS・Python 3.11/3.13の自動試験設定。
