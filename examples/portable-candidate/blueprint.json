@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.4-draft",
+  "project_id": "PROJECT-EXAMPLE",
+  "intent_ref": "INTENT-01",
+  "discoveries": [
+    {
+      "id": "DISC-RESPONSE",
+      "description": "素材の履歴依存性と時刻ずれ",
+      "basis": "構想からの仮説。実測なし",
+      "status": "hypothesis",
+      "scope": "触覚同期",
+      "response": "再現試行で調査",
+      "review_trigger": "予備試験"
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "OUT-SYNC",
+      "origin": "プロダクトの発意から提案",
+      "expectation": "刺激と応答の時間対応を検証可能にする",
+      "condition": "同じ刺激軌跡と機器条件",
+      "due_before": "実機適合の主張",
+      "verification": "反復観測と時間ずれの計測。閾値は未決定",
+      "mandatory": true
+    }
+  ],
+  "methods": [
+    {
+      "id": "METHOD-REPLAY",
+      "name": "刺激・応答対の再現試行",
+      "origin": "project_invented",
+      "basis": "履歴依存性仮説",
+      "purpose": "応答の再現性を評価",
+      "scope": "安全な模擬試行",
+      "prerequisites": [
+        "安全性の確認",
+        "時刻同期の確認"
+      ],
+      "activities": [
+        "軌跡記録",
+        "再生",
+        "差分測定"
+      ],
+      "artifact_ids": [
+        "ART-MAP"
+      ],
+      "outcome_ids": [
+        "OUT-SYNC"
+      ],
+      "verification": "実機の結果は未検証",
+      "failure_response": "原因調査と方法再設計",
+      "rationale": "素材固有の時間応答を評価",
+      "status": "proposed"
+    }
+  ],
+  "roles": [
+    {
+      "id": "ROLE-DESIGN",
+      "mission": "設計・試作",
+      "responsibilities": [
+        "試作",
+        "測定設計"
+      ],
+      "knowledge": [
+        "触覚インターフェース"
+      ]
+    }
+  ],
+  "collaborations": [],
+  "artifacts": [
+    {
+      "id": "ART-MAP",
+      "name": "刺激応答マップ",
+      "format": "x.material.response-map",
+      "purpose": "刺激と応答の対応",
+      "owner_role": "ROLE-DESIGN"
+    }
+  ],
+  "holds": [
+    {
+      "outcome_id": "OUT-SYNC",
+      "reason": "実測・閾値未確定",
+      "blocked_scope": "実機適合の主張",
+      "continue_work": [
+        "文献調査",
+        "模擬データ試作"
+      ]
+    }
+  ],
+  "governance": {
+    "intent_protection": "発意原文を保持",
+    "github_policy": "短命ブランチ、実験データ固定",
+    "authority_boundary": "実機試験は許可前に実施しない",
+    "quality_policy": "未検証を合格としない",
+    "budget": "試行ごとに定義",
+    "handoff": "基準版と未解決事項を記録"
+  }
+}
