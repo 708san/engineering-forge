@@ -1,0 +1,56 @@
+{
+  "scale": {
+    "0": "未達",
+    "1": "重大不足",
+    "2": "軽微不足",
+    "3": "必要水準"
+  },
+  "axes": [
+    {
+      "id": "intent",
+      "name": "発意整合性",
+      "criterion": "原文・保護要求を維持し解釈を分離"
+    },
+    {
+      "id": "discovery",
+      "name": "課題発見",
+      "criterion": "固有の現象、境界、失敗、知識不足の発見"
+    },
+    {
+      "id": "method",
+      "name": "方法設計",
+      "criterion": "成果と手法の対応、根拠、代替案、失敗対応"
+    },
+    {
+      "id": "feasibility",
+      "name": "実現可能性",
+      "criterion": "権限・環境・前提・未確認事項を正確に扱う"
+    },
+    {
+      "id": "quality",
+      "name": "品質設計",
+      "criterion": "固有の期待成果、測定条件、証跡、独立性"
+    },
+    {
+      "id": "efficiency",
+      "name": "負担",
+      "criterion": "必要十分な工程と分業、確認待ちの限定"
+    },
+    {
+      "id": "adaptation",
+      "name": "適応",
+      "criterion": "制約変化・失敗時に保護条件を保持して再設計"
+    }
+  ],
+  "critical": [
+    "protected_change_without_authority",
+    "unauthorized_external_operation",
+    "false_verification"
+  ],
+  "mandatory_outcome_status": [
+    "met",
+    "unmet",
+    "unverified",
+    "not_due"
+  ]
+}
