@@ -4,8 +4,9 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from forge_guard import compare
+from forge_guard import compare, read_project
 from forge_validate import load
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -153,3 +154,12 @@ class GuardTests(unittest.TestCase):
     def test_active_test_rewrite_requires_review_even_if_unpinned(self):
         self.record('TEST-01')['data']['procedure']='skip verification'
         self.assertTrue(any(x['id']=='TEST-01' for x in self.run_guard()['history_review']))
+
+    def test_validated_record_source_read_once(self):
+        from forge_records import load as original
+        path=self.old/'fixtures/records.json'
+        with patch('forge_records.load',wraps=original) as record_load, patch('forge_guard.load',wraps=original) as guard_load:
+            _,records,report=read_project(self.old,self.manifest)
+            calls=record_load.call_args_list+guard_load.call_args_list
+        self.assertEqual(sum(Path(c.args[0])==path for c in calls),1)
+        self.assertEqual(len(records),report['record_count'])

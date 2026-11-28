@@ -1,4 +1,8 @@
 import copy
+import json
+from pathlib import Path
+import shutil
+import tempfile
 import unittest
 from unittest.mock import patch
 from forge_trial import assess,digest,review
@@ -87,3 +91,25 @@ class TrialTests(unittest.TestCase):
         r=review(self.p,self.o,self.h,'old','manifest','new','manifest')
         self.assertEqual(r['assessment'],'stop_or_rework')
         self.assertTrue(r['record_review_required'])
+
+    def test_real_record_guard_with_trial(self):
+        root=Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as tmp:
+            old,new=Path(tmp)/'old',Path(tmp)/'new'
+            for d in (old,new):
+                d.mkdir()
+                shutil.copytree(root/'fixtures',d/'fixtures')
+                (d/'schemas').mkdir()
+                shutil.copyfile(root/'schemas/example-response-map.schema.json',
+                                d/'schemas/example-response-map.schema.json')
+            args=(old,'fixtures/project.json',new,'fixtures/project.json')
+            r=review(self.p,self.o,self.h,*args)
+            self.assertEqual(r['assessment'],'candidate_for_review')
+            self.assertFalse(r['protected_conditions_verified'])
+            path=new/'fixtures/records.json'
+            records=json.loads(path.read_text(encoding='utf-8'))
+            next(x for x in records if x['id']=='REQ-01')['body']='weaken protected requirement'
+            path.write_text(json.dumps(records),encoding='utf-8')
+            r=review(self.p,self.o,self.h,*args)
+            self.assertEqual(r['assessment'],'protected_or_governance_review_required')
+            self.assertTrue(r['record_guard']['protected_changes'])
