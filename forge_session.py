@@ -29,6 +29,8 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
     baseline = records[pair(manifest['baseline_ref'])]
     tasks = {k: r for k,r in active.items() if r['type'] == 'Task'}
     baseline_issues = []
+    if baseline['authority'] == 'rejected':
+        baseline_issues.append('baseline_rejected')
     if baseline['lifecycle'] != 'active':
         baseline_issues.append('baseline_not_active')
     pinned = {pair(r) for r in baseline['data']['composition']}
@@ -61,11 +63,13 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
             environment = records[pair(t['data']['environment'])]
             good = (bool(reports) and not any(e['review_required'] for e in reports)
                     and environment['lifecycle'] == 'active'
+                    and environment['authority'] != 'rejected' and t['authority'] != 'rejected'
+                    and all(e['authority'] != 'rejected' for e in candidates)
                     and pair(t) in pinned and pair(environment) in pinned)
             outcomes.append({'test': ref(t), 'evidence': [ref(e) for e in candidates],
                              'test_and_environment_pinned': pair(t) in pinned and pair(environment) in pinned,
                              'assessment': 'reported_pass' if good else 'review_required'})
-        ok = (criterion['lifecycle'] == 'active' and cid in pinned and bool(outcomes)
+        ok = (criterion['lifecycle'] == 'active' and criterion['authority'] != 'rejected' and cid in pinned and bool(outcomes)
               and all(t['assessment'] == 'reported_pass' for t in outcomes))
         return {'criterion': ref(criterion), 'expected': criterion['data']['expected'],
                 'conditions': criterion['data']['conditions'], 'tests': outcomes,
@@ -95,6 +99,10 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
         checks = [criterion_report(records[pair(c)]) for c in data['acceptance']]
         waits = [d for d in task_links[id] if results[d]['assessment'] != 'recorded_done']
         holds = list(baseline_issues)
+        if task['authority'] == 'rejected':
+            holds.append('task_rejected')
+        if role['authority'] == 'rejected':
+            holds.append('owner_role_rejected')
         if data['baseline'] != ref(baseline):
             holds.append('task_baseline_differs')
         if outside:
@@ -102,6 +110,7 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
         if not checks:
             holds.append('no_completion_criteria')
         if any(pair(c) not in pinned or records[pair(c)]['lifecycle'] != 'active'
+               or records[pair(c)]['authority'] == 'rejected'
                for c in data['acceptance']):
             holds.append('completion_criterion_not_active_and_pinned')
         if other_deps[id]:
@@ -120,7 +129,8 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
             target = (records[(link['target_id'], link['target_revision'])]
                       if 'target_revision' in link else active[link['target_id']])
             if target['type'] in {'Intent','Goal','Principle','Requirement','Constraint','Policy'} and (
-                    pair(target) not in pinned or target['lifecycle'] != 'active'):
+                    pair(target) not in pinned or target['lifecycle'] != 'active'
+                    or target['authority'] == 'rejected'):
                 holds.append('linked_normative_record_not_active_and_pinned')
                 break
         state = data['state']

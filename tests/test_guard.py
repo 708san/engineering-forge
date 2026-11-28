@@ -163,3 +163,19 @@ class GuardTests(unittest.TestCase):
             calls=record_load.call_args_list+guard_load.call_args_list
         self.assertEqual(sum(Path(c.args[0]).resolve()==path.resolve() for c in calls),1)
         self.assertEqual(len(records),report['record_count'])
+
+    def test_new_claimed_approval_requires_review(self):
+        task=copy.deepcopy(self.record('TASK-01'))
+        task.update(id='TASK-NEW',authority='human_approved',authority_ref='unverified-claim')
+        self.records.append(task)
+        self.assertIn('TASK-NEW',self.run_guard()['authority_label_review'])
+
+    def test_existing_task_authority_change_requires_review(self):
+        self.record('TASK-01')['authority']='rejected'
+        self.assertIn('TASK-01',self.run_guard()['authority_label_review'])
+
+    def test_new_proposal_not_approval_claim(self):
+        task=copy.deepcopy(self.record('TASK-01'))
+        task['id']='TASK-NEW'
+        self.records.append(task)
+        self.assertEqual(self.run_guard()['authority_label_review'],[])

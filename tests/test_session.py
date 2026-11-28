@@ -271,3 +271,40 @@ class SessionTests(unittest.TestCase):
         r=session(self.p,'fixtures/project.json',target=code)
         self.assertEqual(self.task(r)['assessment'],'review_required')
         self.assertEqual(r['next_candidates'],[])
+
+    def test_rejected_task_not_work_candidate(self):
+        self.get('TASK-01')['authority']='rejected'
+        self.add_task()
+        r=self.run_session()
+        self.assertIn('task_rejected',self.task(r)['holds'])
+        self.assertEqual(r['next_candidates'],['TASK-02'])
+
+    def test_rejected_role_blocks_candidates(self):
+        self.get('ROLE-OWNER')['authority']='rejected'
+        r=self.run_session()
+        self.assertIn('owner_role_rejected',self.task(r)['holds'])
+        self.assertFalse(r['next_candidates'])
+
+    def test_rejected_baseline_holds(self):
+        self.get('BASE-01')['authority']='rejected'
+        r=self.run_session()
+        self.assertIn('baseline_rejected',r['baseline_issues'])
+        self.assertFalse(r['next_candidates'])
+
+    def test_rejected_criterion_holds(self):
+        self.get('AC-01')['authority']='rejected'
+        self.assertFalse(self.run_session()['next_candidates'])
+
+    def test_rejected_requirement_holds(self):
+        self.get('REQ-01')['authority']='rejected'
+        self.assertFalse(self.run_session()['next_candidates'])
+
+    def test_rejected_reported_pass_is_not_completion(self):
+        for id in ('TEST-01','ENV-01','EVID-01'):
+            with self.subTest(id=id):
+                self.reported_pass()
+                r=self.get(id)
+                original=r['authority']
+                r['authority']='rejected'
+                self.assertEqual(self.task(self.run_session())['assessment'],'review_required')
+                r['authority']=original

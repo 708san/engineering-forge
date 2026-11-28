@@ -64,6 +64,22 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
         if (not a or not b or a['type'] != b['type'] or
                 any(a['data'].get(f) != b['data'].get(f) for f in fields)):
             scope_review.append(id)
+    # Authority labels are declarations, not credentials. Changes to an existing
+    # active identity's label/reference and newly claimed approval need review.
+    authority_review = []
+    for id in sorted(old_active.keys() | new_active.keys()):
+        a = old.get(old_active.get(id))
+        b = new.get(new_active.get(id))
+        if b is None:
+            if a and a['authority'] in {'delegated','human_approved','rejected'}:
+                authority_review.append(id)
+            continue
+        fields = ('authority','authority_ref')
+        if a is not None:
+            if any(a.get(f) != b.get(f) for f in fields):
+                authority_review.append(id)
+        elif b['authority'] in {'delegated','human_approved'}:
+            authority_review.append(id)
     manifest_review = []
     for field in ('mode', 'policies', 'target_profiles', 'baseline_ref'):
         if old_m[field] != new_m[field]:
@@ -109,8 +125,9 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
             'protected_changes': changes, 'role_scope_review': scope_review,
             'manifest_review': manifest_review, 'extension_registry_review': extension_review,
             'pinned_record_review': pinned_review, 'history_review': history_review,
+            'authority_label_review': authority_review,
             'unverified_extensions': unknown,
-            'review_required': bool(changes or scope_review or manifest_review or extension_review or pinned_review or history_review or any(unknown.values())),
+            'review_required': bool(changes or scope_review or manifest_review or extension_review or pinned_review or history_review or authority_review or any(unknown.values())),
             'baseline_authenticity_verified': False, 'approval_verified': False,
             'authority_verified': False, 'semantic_review_required': True,
             'files_modified': False}

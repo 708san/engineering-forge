@@ -23,3 +23,5 @@
 指紋は列挙されたレコードのみを対象とし、全ツリー、推移的参照、外部実行環境、署名、承認を証明しない。Pythonの正規化方式であり他言語共通の標準正規化を保証しない。証跡の対象コード版と証跡の保存版は分ける。
 
 作業の受入条件と直接紐付く規範的レコード（Intent/Goal/Principle/Requirement/Constraint/Policy）はactiveかつ現在のBaseline.compositionに固定されている必要がある。完了の記録判定には関連するactiveなTest・Environmentも基準に固定する。テスト手順だけを書き換えて以前の証跡を有効扱いしない。まだ試験がない提案タスクは受入条件が固定済みなら設計・実装候補になり得る。固定集合の網羅性や意味は別途レビューする。
+
+v0.17: 明示的にrejectedと記録された基準・担当Role・Task・直接参照する規範的レコード・受入条件を作業候補にしない。rejectedのTest/Environment/Evidenceを合格の根拠にしない。記録上のproposed/delegated/human_approvedを実際の作業許可と同一視しない。再提案・正式な訂正は別途レビューする。
