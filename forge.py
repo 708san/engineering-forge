@@ -18,6 +18,7 @@ COMMANDS = {
     'progress': 'forge_progress.py',
     'records': 'forge_records.py',
     'guard': 'forge_guard.py',
+    'session': 'forge_session.py',
 }
 
 

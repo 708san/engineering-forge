@@ -68,12 +68,32 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
         if (not a or not b or a['type'] != b['type'] or
                 any(a['data'].get(f) != b['data'].get(f) for f in fields)):
             scope_review.append(id)
+    manifest_review = []
+    for field in ('mode', 'policies', 'target_profiles', 'baseline_ref'):
+        if old_m[field] != new_m[field]:
+            manifest_review.append(field)
+    # A pinned policy/environment/baseline can be edited in place without
+    # changing the reference. Detect the content change independently.
+    for field in ('policies', 'target_profiles'):
+        if any(old.get((r['id'],r['revision'])) != new.get((r['id'],r['revision']))
+               for r in old_m[field]) and field not in manifest_review:
+            manifest_review.append(field)
+    b = old_m['baseline_ref']
+    if old.get((b['id'],b['revision'])) != new.get((b['id'],b['revision'])) and 'baseline_ref' not in manifest_review:
+        manifest_review.append('baseline_ref')
+    # Extensions can evolve by adding versions. Redefining/removing an
+    # already registered version requires review.
+    old_ext = {(r['type_id'],r['version']):r for r in old_m['extension_registry']}
+    new_ext = {(r['type_id'],r['version']):r for r in new_m['extension_registry']}
+    extension_review = [dict(type_id=k[0],version=k[1]) for k in sorted(old_ext)
+                        if old_ext[k] != new_ext.get(k)]
     unknown = {'baseline': old_report['extension_payloads_unverified'],
                'candidate': new_report['extension_payloads_unverified']}
     return {'project_id': old_m['project_id'], 'protected_records_compared': len(keys),
             'protected_changes': changes, 'role_scope_review': scope_review,
+            'manifest_review': manifest_review, 'extension_registry_review': extension_review,
             'unverified_extensions': unknown,
-            'review_required': bool(changes or scope_review or any(unknown.values())),
+            'review_required': bool(changes or scope_review or manifest_review or extension_review or any(unknown.values())),
             'baseline_authenticity_verified': False, 'approval_verified': False,
             'authority_verified': False, 'semantic_review_required': True,
             'files_modified': False}

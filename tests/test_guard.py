@@ -94,3 +94,30 @@ class GuardTests(unittest.TestCase):
     def test_same_tree_rejected(self):
         with self.assertRaises(ValueError):
             compare(self.old,self.manifest,self.old,self.manifest)
+
+    def test_mode_change_review(self):
+        m=load(self.new/self.manifest)
+        m['mode']='enforced'
+        (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
+        self.assertIn('mode',self.run_guard()['manifest_review'])
+
+    def test_removed_target_profile(self):
+        m=load(self.new/self.manifest)
+        m['target_profiles']=[]
+        (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
+        self.assertIn('target_profiles',self.run_guard()['manifest_review'])
+
+    def test_pinned_environment_changed(self):
+        self.record('ENV-01')['data']['capabilities']['browser']='available'
+        self.assertIn('target_profiles',self.run_guard()['manifest_review'])
+
+    def test_baseline_mutated_in_place(self):
+        self.record('BASE-01')['data']['snapshot_sha256']='a'*64
+        self.assertIn('baseline_ref',self.run_guard()['manifest_review'])
+
+    def test_removed_extension_registration(self):
+        m=load(self.new/self.manifest)
+        m['extension_registry']=[]
+        (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
+        self.assertEqual(self.run_guard()['extension_registry_review'],
+                         [{'type_id':'x.material.response-map','version':'1.0.0'}])

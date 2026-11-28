@@ -1,5 +1,5 @@
 # ChatGPT・Codex 共通のプロジェクト立ち上げと継続開発
-状態: v0.13-dev 試用手順。ネイティブ Skills 読込・自動適用は未検証。
+状態: v0.14-dev 試用手順。ネイティブ Skills 読込・自動適用は未検証。
 
 ## 開始
 ユーザーの指示例: 「https://github.com/708san/engineering-forge の START.md を読んで、次の構想に適した開発体制を設計し、許可された範囲で開発を始めてください。構想: ...」
@@ -44,3 +44,5 @@ https://developers.openai.com/cookbook/examples/codex/iterating-development-work
 進捗や前提条件の確認は `bootstrap/progress.md` を任意利用する。独立作業を継続し、旧版の合格記録を新しい版に自動継承しない。
 
 複雑な正本・追跡・独自形式は `bootstrap/records.md` の共通情報モデルを任意利用する。未知拡張の存在を成功と誤認しない。
+
+共通レコードを正本にする場合は `bootstrap/session.md` に従い作業契約・依存・証跡を再利用する。通常の継続開発で同じ記録を別形式に二重転記しない。
