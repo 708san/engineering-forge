@@ -19,6 +19,7 @@ COMMANDS = {
     'records': 'forge_records.py',
     'guard': 'forge_guard.py',
     'session': 'forge_session.py',
+    'baseline': 'forge_baseline.py',
 }
 
 

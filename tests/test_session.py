@@ -6,6 +6,7 @@ import tempfile
 import unittest
 
 from forge_session import session
+from forge_baseline import fingerprint
 from forge_validate import load
 from forge_integrate import git
 
@@ -29,7 +30,12 @@ class SessionTests(unittest.TestCase):
     def get(self, id):
         return next(r for r in self.r if r['id'] == id)
 
-    def save(self):
+    def save(self, *, update_digest=True):
+        if update_digest:
+            m = load(self.m)
+            records = {(r['id'],r['revision']):r for r in self.r}
+            b = records[(m['baseline_ref']['id'],m['baseline_ref']['revision'])]
+            b['data']['snapshot_sha256'] = fingerprint(records,b)
         self.path.write_text(json.dumps(self.r, ensure_ascii=False), encoding='utf-8')
 
     def run_session(self, **kwargs):
@@ -127,7 +133,9 @@ class SessionTests(unittest.TestCase):
 
     def test_unconfirmed_source(self):
         self.get('BASE-01')['data']['source_commit'] = None
-        self.assertIn('baseline_source_revision_unconfirmed', self.run_session()['baseline_issues'])
+        r = self.run_session()
+        self.assertFalse(r['source_revision_observed'])
+        self.assertEqual(r['next_candidates'], ['TASK-01'])
 
     def test_unknown_extension_local_hold(self):
         m = load(self.m)
@@ -158,3 +166,29 @@ class SessionTests(unittest.TestCase):
         before = self.path.read_bytes()
         session(self.p, 'fixtures/project.json')
         self.assertEqual(before, self.path.read_bytes())
+
+    def test_changed_baseline_composition_held(self):
+        self.save()
+        self.get('REQ-01')['body'] = 'changed requirement'
+        self.save(update_digest=False)
+        r = session(self.p, 'fixtures/project.json')
+        self.assertFalse(r['baseline_composition_matches'])
+        self.assertEqual(r['next_candidates'], [])
+
+    def test_separate_code_target(self):
+        code = self.p/'code'
+        code.mkdir()
+        git(code, 'init', '-q')
+        git(code, 'config', 'user.name', 'Test')
+        git(code, 'config', 'user.email', 'test@example.invalid')
+        git(code, 'commit', '--allow-empty', '-qm', 'code')
+        self.get('BASE-01')['data']['source_commit'] = git(code,'rev-parse','HEAD').decode().strip()
+        self.save()
+        r = session(self.p, 'fixtures/project.json', target=code)
+        self.assertEqual(r['next_candidates'], ['TASK-01'])
+        self.assertTrue(r['source_revision_observed'])
+        self.assertTrue(r['baseline_composition_matches'])
+        git(code, 'commit', '--allow-empty', '-qm', 'code changed')
+        r = session(self.p, 'fixtures/project.json', target=code)
+        self.assertEqual(r['next_candidates'], [])
+        self.assertIn('baseline_source_differs_from_observed_head', r['baseline_issues'])

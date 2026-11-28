@@ -63,3 +63,5 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## 正本に基づく開発の再開
 [作業契約・セッション検査](bootstrap/session.md)（forge.py session）は共通レコードから候補と作業契約を導出し、依存・版・証跡・宣言上の操作範囲を照合する。実行・承認はしない。既存の課題管理を利用してもよい。
+
+`forge.py baseline PROJECT_ROOT MANIFEST` は基準の固定レコード集合の内容指紋を計算する。`session --target CODE_WORKTREE` は記録保存先とは別のコード作業領域のHEADを観測できる。

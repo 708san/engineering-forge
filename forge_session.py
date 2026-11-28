@@ -4,6 +4,7 @@ import json
 import sys
 
 from forge_guard import read_project
+from forge_baseline import fingerprint
 from forge_integrate import clean_head
 from forge_preview import root
 from forge_progress import topological
@@ -17,9 +18,12 @@ def pair(r):
     return (r['id'], r['revision'])
 
 
-def session(directory, manifest_path, *, observe_git=False):
+def session(directory, manifest_path, *, observe_git=False, target=None):
     base = root(directory)
-    head = clean_head(base) if observe_git else None
+    if observe_git and target is not None:
+        raise ValueError('select one Git observation target')
+    git_target = base if observe_git else (root(target) if target is not None else None)
+    head = clean_head(git_target) if git_target is not None else None
     manifest, records, observation = read_project(base, manifest_path)
     active = {r['id']: r for r in records.values() if r['lifecycle'] == 'active'}
     baseline = records[pair(manifest['baseline_ref'])]
@@ -27,7 +31,10 @@ def session(directory, manifest_path, *, observe_git=False):
     baseline_issues = []
     if baseline['lifecycle'] != 'active':
         baseline_issues.append('baseline_not_active')
-    if baseline['data']['source_commit'] is None:
+    computed = fingerprint(records, baseline)
+    if computed != baseline['data']['snapshot_sha256']:
+        baseline_issues.append('baseline_composition_digest_mismatch')
+    if head is not None and baseline['data']['source_commit'] is None:
         baseline_issues.append('baseline_source_revision_unconfirmed')
     elif head is not None and baseline['data']['source_commit'] != head:
         baseline_issues.append('baseline_source_differs_from_observed_head')
@@ -142,10 +149,12 @@ def session(directory, manifest_path, *, observe_git=False):
                                     'role_authority_label': role['authority'],
                                     'linked_records': requirements, 'completion_checks': checks,
                                     'operation_authority_verified': False}}
-    if observe_git and clean_head(base) != head:
+    if git_target is not None and clean_head(git_target) != head:
         raise ValueError('target HEAD changed during inspection')
     return {'project_id': manifest['project_id'], 'baseline': ref(baseline),
             'observed_head': head, 'baseline_issues': baseline_issues,
+            'baseline_composition_matches': computed == baseline['data']['snapshot_sha256'],
+            'source_revision_observed': head is not None,
             'tasks': list(results.values()),
             'next_candidates': [id for id,t in results.items()
                                 if t['assessment'] == 'candidate_for_work'],
@@ -161,11 +170,13 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('directory')
     p.add_argument('manifest')
-    p.add_argument('--observe-git', action='store_true',
+    group = p.add_mutually_exclusive_group()
+    group.add_argument('--target', help='separate clean Git worktree containing the actual code under review')
+    group.add_argument('--observe-git', action='store_true',
                    help='observe clean target HEAD, not proof of baseline authenticity')
     a = p.parse_args()
     try:
-        result = session(a.directory, a.manifest, observe_git=a.observe_git)
+        result = session(a.directory, a.manifest, observe_git=a.observe_git, target=a.target)
     except Exception as e:
         print(f'session inspection blocked: {type(e).__name__}: {e}', file=sys.stderr)
         return 1
