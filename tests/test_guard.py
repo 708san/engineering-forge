@@ -1,0 +1,96 @@
+import copy
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+
+from forge_guard import compare
+from forge_validate import load
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class GuardTests(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.old, self.new = Path(tmp.name)/'old', Path(tmp.name)/'new'
+        self.manifest = 'fixtures/project.json'
+        for base in (self.old,self.new):
+            base.mkdir()
+            shutil.copytree(ROOT/'fixtures', base/'fixtures')
+            (base/'schemas').mkdir()
+            shutil.copyfile(ROOT/'schemas/example-response-map.schema.json',
+                            base/'schemas/example-response-map.schema.json')
+        self.records = load(self.new/'fixtures/records.json')
+
+    def record(self,id):
+        return next(r for r in self.records if r['id']==id)
+
+    def run_guard(self):
+        (self.new/'fixtures/records.json').write_text(
+            json.dumps(self.records,ensure_ascii=False),encoding='utf-8')
+        return compare(self.old,self.manifest,self.new,self.manifest)
+
+    def test_unchanged(self):
+        r=self.run_guard()
+        self.assertEqual(r['protected_records_compared'],3)
+        self.assertFalse(r['review_required'])
+        self.assertFalse(r['approval_verified'])
+
+    def test_requirements_modified(self):
+        self.record('REQ-01')['body']='send data'
+        self.assertTrue(self.run_guard()['protected_changes'])
+
+    def test_new_revision_cannot_replace_protected(self):
+        old=self.record('REQ-01')
+        new=copy.deepcopy(old)
+        old['lifecycle']='superseded'
+        new['revision']=2
+        self.records.append(new)
+        self.assertTrue(any(x['reason']=='protected_active_revision_replaced_or_removed'
+                            for x in self.run_guard()['protected_changes']))
+
+    def test_criterion_downgrade(self):
+        self.record('AC-01')['data']['mandatory']=False
+        self.assertTrue(self.run_guard()['protected_changes'])
+
+    def test_pinned_nonmandatory_criterion_protected(self):
+        old=load(self.old/'fixtures/records.json')
+        next(x for x in old if x['id']=='AC-01')['data']['mandatory']=False
+        (self.old/'fixtures/records.json').write_text(json.dumps(old),encoding='utf-8')
+        self.record('AC-01')['data']['mandatory']=False
+        self.record('AC-01')['data']['expected']='weaker goal'
+        self.assertTrue(self.run_guard()['protected_changes'])
+
+    def test_unprotected_design_change_allowed(self):
+        self.record('TASK-01')['data']['scope']='changed implementation approach'
+        self.assertFalse(self.run_guard()['review_required'])
+
+    def test_role_scope_change_review(self):
+        self.record('ROLE-OWNER')['data']['allowed_operations'].append('publish')
+        self.assertEqual(self.run_guard()['role_scope_review'],['ROLE-OWNER'])
+
+    def test_added_role_review(self):
+        r=copy.deepcopy(self.record('ROLE-OWNER'))
+        r['id']='ROLE-NEW'
+        self.records.append(r)
+        self.assertEqual(self.run_guard()['role_scope_review'],['ROLE-NEW'])
+
+    def test_mismatched_project(self):
+        m=load(self.new/self.manifest)
+        m['project_id']='PROJECT-OTHER'
+        (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
+        with self.assertRaises(ValueError):
+            self.run_guard()
+
+    def test_unknown_extension_review(self):
+        m=load(self.new/self.manifest)
+        m['extension_registry']=[]
+        (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
+        self.assertTrue(self.run_guard()['review_required'])
+
+    def test_same_tree_rejected(self):
+        with self.assertRaises(ValueError):
+            compare(self.old,self.manifest,self.old,self.manifest)
