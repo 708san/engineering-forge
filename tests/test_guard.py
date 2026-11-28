@@ -161,5 +161,5 @@ class GuardTests(unittest.TestCase):
         with patch('forge_records.load',wraps=original) as record_load, patch('forge_guard.load',wraps=original) as guard_load:
             _,records,report=read_project(self.old,self.manifest)
             calls=record_load.call_args_list+guard_load.call_args_list
-        self.assertEqual(sum(Path(c.args[0])==path for c in calls),1)
+        self.assertEqual(sum(Path(c.args[0]).resolve()==path.resolve() for c in calls),1)
         self.assertEqual(len(records),report['record_count'])

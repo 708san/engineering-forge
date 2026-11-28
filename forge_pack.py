@@ -18,7 +18,7 @@ REFERENCES = (
     'evaluation-v0.5.md', 'bootstrap/contract.md', 'bootstrap/portable-project.md',
     'bootstrap/quickstart.md', 'bootstrap/handoff.md', 'bootstrap/integration.md',
     'bootstrap/change-impact.md', 'bootstrap/distribution.md', 'bootstrap/agent-adapters.md', 'bootstrap/progress.md', 'bootstrap/records.md', 'bootstrap/session.md', 'bootstrap/adaptation.md',
-    'evaluation/first-use.md', 'evaluation/run-record.md', 'evaluation/calibration-v0.12.md', 'evaluation/rubric.json', 'schemas/blueprint.schema.json', 'schemas/record.schema.json', 'schemas/project.schema.json', 'schemas/example-response-map.schema.json',
+    'evaluation/first-use.md', 'evaluation/acceptance-index.md', 'evaluation/run-record.md', 'evaluation/calibration-v0.12.md', 'evaluation/rubric.json', 'schemas/blueprint.schema.json', 'schemas/record.schema.json', 'schemas/project.schema.json', 'schemas/example-response-map.schema.json',
     'knowledge/README.md', 'knowledge/lessons.md',
     *('.agents/skills/' + name + '/SKILL.md' for name in (
         'architect-project', 'discover-intent', 'research-knowledge', 'design-method',

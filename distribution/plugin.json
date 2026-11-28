@@ -1,6 +1,6 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "engineering-forge",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Development candidate: co-design, build and evolve project-specific engineering systems."
 }
