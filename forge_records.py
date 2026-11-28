@@ -114,7 +114,7 @@ DATA_REFS = {
 }
 
 
-def inspect(directory, manifest):
+def inspect(directory, manifest, *, include_records=False):
     base = root(directory)
     checked(Draft202012Validator(load(SCHEMAS / 'project.schema.json')), manifest, 'project')
     rv = Draft202012Validator(load(SCHEMAS / 'record.schema.json'))
@@ -204,7 +204,7 @@ def inspect(directory, manifest):
     # Separate parent/child hierarchy from hard execution dependencies.
     topological({k: sorted(set(v)) for k,v in graph.items()}, 'dependency')
     topological({k: sorted(set(v)) for k,v in hierarchy.items()}, 'hierarchy')
-    return dict(project_id=manifest['project_id'], record_count=len(records),
+    report = dict(project_id=manifest['project_id'], record_count=len(records),
                 structure='pass', extension_payloads_validated=validated,
                 extension_payloads_unverified=unknown, evidence=evidence,
                 practice_definition_refs_unverified=practices,
@@ -212,6 +212,7 @@ def inspect(directory, manifest):
                 managed_outputs_verified=False, authority_verified=False,
                 semantic_review_required=True, enforcement_verified=False,
                 files_modified=False)
+    return (report, records) if include_records else report
 
 
 def main():

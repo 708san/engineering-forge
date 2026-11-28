@@ -121,3 +121,25 @@ class GuardTests(unittest.TestCase):
         (self.new/self.manifest).write_text(json.dumps(m),encoding='utf-8')
         self.assertEqual(self.run_guard()['extension_registry_review'],
                          [{'type_id':'x.material.response-map','version':'1.0.0'}])
+
+    def test_pinned_nonprotected_record_rewrite(self):
+        old=load(self.old/'fixtures/records.json')
+        next(r for r in old if r['id']=='BASE-01')['data']['composition'].append({'id':'TEST-01','revision':1})
+        (self.old/'fixtures/records.json').write_text(json.dumps(old),encoding='utf-8')
+        self.record('BASE-01')['data']['composition'].append({'id':'TEST-01','revision':1})
+        self.record('TEST-01')['data']['procedure']='weakened procedure'
+        r=self.run_guard()
+        self.assertIn({'id':'TEST-01','revision':1},r['pinned_record_review'])
+        self.assertTrue(r['review_required'])
+
+    def test_evidence_rewrite(self):
+        self.record('EVID-01')['data']['result']='pass'
+        self.assertTrue(self.run_guard()['history_review'])
+
+    def test_evidence_removal(self):
+        self.records=[r for r in self.records if r['id']!='EVID-01']
+        self.assertTrue(self.run_guard()['history_review'])
+
+    def test_evidence_retirement_without_rewriting(self):
+        self.record('EVID-01')['lifecycle']='retired'
+        self.assertFalse(self.run_guard()['history_review'])

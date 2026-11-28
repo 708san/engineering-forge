@@ -20,6 +20,7 @@ COMMANDS = {
     'guard': 'forge_guard.py',
     'session': 'forge_session.py',
     'baseline': 'forge_baseline.py',
+    'trial': 'forge_trial.py',
 }
 
 

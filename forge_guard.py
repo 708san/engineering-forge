@@ -12,11 +12,7 @@ from forge_validate import load
 def read_project(directory, relative_manifest):
     base = root(directory)
     manifest = load(project_file(base, relative_manifest))
-    report = inspect(base, manifest)
-    records = {}
-    for source in manifest['record_sources']:
-        for r in load(project_file(base, source['path'])):
-            records[(r['id'], r['revision'])] = r
+    report, records = inspect(base, manifest, include_records=True)
     return manifest, records, report
 
 
@@ -81,6 +77,24 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
     b = old_m['baseline_ref']
     if old.get((b['id'],b['revision'])) != new.get((b['id'],b['revision'])) and 'baseline_ref' not in manifest_review:
         manifest_review.append('baseline_ref')
+    # Preserve the meaning of previously pinned records and historical evidence.
+    # Lifecycle-only changes to nonprotected records can be legitimate retirement.
+    prior_baseline = old[(b['id'], b['revision'])]
+    pinned_review = []
+    for r in prior_baseline['data']['composition']:
+        k = (r['id'], r['revision'])
+        if old[k] != new.get(k):
+            pinned_review.append(dict(id=k[0],revision=k[1]))
+    history_review = []
+    for k, r in sorted(old.items()):
+        if r['lifecycle'] == 'active' and r['type'] not in {'Evidence','Finding','Change','Decision','Release','Incident','Baseline'}:
+            continue
+        n = new.get(k)
+        if n is None or ({x:v for x,v in r.items() if x != 'lifecycle'} !=
+                         {x:v for x,v in n.items() if x != 'lifecycle'}):
+            history_review.append(dict(id=k[0],revision=k[1],reason='removed_or_rewritten'))
+        elif r['lifecycle'] != 'active' and n['lifecycle'] == 'active':
+            history_review.append(dict(id=k[0],revision=k[1],reason='historical_revision_reactivated'))
     # Extensions can evolve by adding versions. Redefining/removing an
     # already registered version requires review.
     old_ext = {(r['type_id'],r['version']):r for r in old_m['extension_registry']}
@@ -92,8 +106,9 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
     return {'project_id': old_m['project_id'], 'protected_records_compared': len(keys),
             'protected_changes': changes, 'role_scope_review': scope_review,
             'manifest_review': manifest_review, 'extension_registry_review': extension_review,
+            'pinned_record_review': pinned_review, 'history_review': history_review,
             'unverified_extensions': unknown,
-            'review_required': bool(changes or scope_review or manifest_review or extension_review or any(unknown.values())),
+            'review_required': bool(changes or scope_review or manifest_review or extension_review or pinned_review or history_review or any(unknown.values())),
             'baseline_authenticity_verified': False, 'approval_verified': False,
             'authority_verified': False, 'semantic_review_required': True,
             'files_modified': False}

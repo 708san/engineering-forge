@@ -18,3 +18,5 @@ description: 新しいプロダクトの共同設計、開発体制の生成、�
 必要に応じて references/bootstrap/records.md の共通記録・独自形式を参照する。29種すべての記録を作成する必要はない。
 
 共通レコードを正本にしている場合は references/bootstrap/session.md から作業契約・前提・証跡を導出する。候補を許可済みとみなさない。小規模案件に強制しない。
+
+開発体制の改善は references/bootstrap/adaptation.md に従い、事前条件と観測を比較する。不要な機構の削減も選択肢に含める。
