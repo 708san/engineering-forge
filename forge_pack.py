@@ -17,7 +17,7 @@ REFERENCES = (
     'architect-v0.5.md', 'generative-architecture.md', 'evaluation.md',
     'evaluation-v0.5.md', 'bootstrap/contract.md', 'bootstrap/portable-project.md',
     'bootstrap/quickstart.md', 'bootstrap/handoff.md', 'bootstrap/integration.md',
-    'bootstrap/change-impact.md', 'bootstrap/distribution.md',
+    'bootstrap/change-impact.md', 'bootstrap/distribution.md', 'bootstrap/agent-adapters.md',
     'evaluation/first-use.md', 'evaluation/rubric.json', 'schemas/blueprint.schema.json',
     'knowledge/README.md', 'knowledge/lessons.md',
     *('.agents/skills/' + name + '/SKILL.md' for name in (

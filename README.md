@@ -50,3 +50,5 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## 配布・知識の再利用
 [任意の共通プラグイン配布](bootstrap/distribution.md)（`python3 -B forge.py pack --ref HEAD --output engineering-forge.zip`）と[知識の再利用](knowledge/README.md)を追加。パッケージ生成はインストールや公開を意味しない。既存のURL参照も利用可能。v0.10のCI成功ログと取得コードに矛盾を発見し検証器の差集合演算を修正した。原因は未解明。
+
+[実行環境別エージェント候補](bootstrap/agent-adapters.md) を追加。`forge.py agents BLUEPRINT.json AGENT-SPEC.json` はAIが考案した役割をCodex用TOMLとChatGPT向け作業契約へ変換する（任意）。生成のみで起動・権限付与は行わない。

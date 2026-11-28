@@ -25,3 +25,5 @@ ChatGPT/Codex 共通の開始・生成・継続開発手順は `bootstrap/portab
 利用者向けの簡潔な入口は `bootstrap/quickstart.md`。AIによる新規案件の試用・別セッション評価は `evaluation/first-use.md` を参照（未実施）。
 
 利用開始には `bootstrap/distribution.md` の任意プラグイン方式もある。知識の再利用は `knowledge/README.md` に従い、適用条件や反例から必要な場合だけ採用する。
+
+必要な場合だけプロジェクト固有のエージェント設定を生成する。`bootstrap/agent-adapters.md` のCodex設定とChatGPT向け作業契約への変換を任意利用できる。
