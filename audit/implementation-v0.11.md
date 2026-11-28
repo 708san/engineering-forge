@@ -4,3 +4,5 @@ GitHub Actions 46012603415 は Linux/macOS、Python 3.11/3.13 の4ジョブ成�
 追加: コミット固定のskill-only portable plugin ZIP、知識の局所蓄積と公開候補審査・適用条件、手法間競合の検討、共通CLI pack。自動インストール、公開、権限強制、独立監査、知識の自動採用は行わない。公式プラグイン形式に基づくパッケージ候補であり、ホスト適合認証ではない。旧R06本文は変更していない。新しい試験はCIで再確認する。ローカルGit直接取得はDNS失敗。外部プロジェクトは未変更。
 
 追加: 公式Codexサブエージェントの必須3項目への構造変換・ChatGPT向け作業契約。自由記述の役割を参照し、追加エージェントなしも許容。TOML往復、参照、名前衝突、設定上書き拒否の試験を追加。実機読込は未検証。公式 https://learn.chatgpt.com/docs/agent-configuration/subagents を確認。
+
+CI run 46088152382（05912b5）は4環境で失敗。job 140802527116 は71件中1 failure/11 errors と報告し、artifacts.keys() に AttributeError: set has no attribute keys を記録。取得ソースでは artifacts は辞書に見えるため、この差異の原因も未特定。型に依存しない set(artifacts), set(roles), set(outcomes) に変更する。新しいコミットで再検証する。過去結果の成功表示と矛盾する観測を隠さない。

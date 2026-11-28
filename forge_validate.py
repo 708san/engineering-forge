@@ -41,7 +41,7 @@ def validate(candidate, baseline=None):
     artifacts = {x['id'] for x in candidate['artifacts']}
     covered = set()
     for m in candidate['methods']:
-        if set(m['outcome_ids']) - outcomes.keys() or set(m['artifact_ids']) - artifacts.keys():
+        if set(m['outcome_ids']) - set(outcomes) or set(m['artifact_ids']) - set(artifacts):
             errors.append(f"invalid method reference: {m['id']}")
         if m['status'] in ('proposed', 'trial', 'selected'):
             covered.update(m['outcome_ids'])
@@ -49,7 +49,7 @@ def validate(candidate, baseline=None):
         if a['owner_role'] not in roles:
             errors.append(f"unknown owner: {a['id']}")
     for c in candidate['collaborations']:
-        if {c['from_role'], c['to_role']} - roles.keys():
+        if {c['from_role'], c['to_role']} - set(roles):
             errors.append('invalid collaboration reference')
     for h in candidate['holds']:
         if h['outcome_id'] not in outcomes:
