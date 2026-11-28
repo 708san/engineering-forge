@@ -9,6 +9,7 @@ from jsonschema import Draft202012Validator
 from forge_preview import root, key
 from forge_handoff import local_file
 from forge_validate import load
+from forge_json import loads
 from forge_progress import topological
 
 SCHEMAS = Path(__file__).resolve().parent / 'schemas'
@@ -79,16 +80,7 @@ def extension_validators(base, manifest):
         raw = path.read_bytes()
         if hashlib.sha256(raw).hexdigest() != entry['sha256']:
             raise ValueError('extension schema digest mismatch: ' + entry['schema_path'])
-        def unique(pairs):
-            result = {}
-            for k, v in pairs:
-                if k in result:
-                    raise ValueError('duplicate schema key: ' + k)
-                result[k] = v
-            return result
-        def invalid(v):
-            raise ValueError('non-finite schema value: ' + v)
-        doc = json.loads(raw.decode('utf-8'), object_pairs_hook=unique, parse_constant=invalid)
+        doc = loads(raw.decode('utf-8'))
         safe_schema(doc)
         Draft202012Validator.check_schema(doc)
         result[ref] = Draft202012Validator(doc)

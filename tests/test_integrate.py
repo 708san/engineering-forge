@@ -120,3 +120,32 @@ class IntegrationTests(unittest.TestCase):
         p = plan(self.c, self.t, prior)
         r = stage(self.c, self.t, prior, p['token'], 'forge/update')
         self.assertEqual(r['next_prior_candidate'], {'a': sha(b'new')})
+
+    def test_deleted_prior_case_alias(self):
+        (self.c / 'New').write_text('new')
+        self.assertEqual(plan(self.c, self.t, {'new': sha(b'old')})['conflicts'], 1)
+
+    def test_deleted_prior_unicode_alias(self):
+        (self.c / 'cafe\u0301').write_text('new')
+        self.assertEqual(plan(self.c, self.t, {'caf\u00e9': sha(b'old')})['conflicts'], 1)
+
+    def test_deleted_prior_file_to_directory(self):
+        (self.c / 'removed').mkdir()
+        (self.c / 'removed' / 'child').write_text('new')
+        self.assertEqual(plan(self.c, self.t, {'removed': sha(b'old')})['conflicts'], 1)
+
+    def test_deleted_prior_directory_to_file(self):
+        (self.c / 'removed').write_text('new')
+        self.assertEqual(plan(self.c, self.t, {'removed/child': sha(b'old')})['conflicts'], 1)
+
+    def test_ambiguous_prior_rejected(self):
+        (self.c / 'new').write_text('new')
+        for prior in ({'A/x': sha(b'old'), 'a/y': sha(b'old')},
+                      {'a': sha(b'old'), 'a/child': sha(b'old')}):
+            with self.subTest(prior=prior), self.assertRaises(ValueError):
+                plan(self.c, self.t, prior)
+
+    def test_new_sibling_of_prior_file_allowed(self):
+        (self.c / 'dir').mkdir()
+        (self.c / 'dir' / 'new').write_text('new')
+        self.assertEqual(plan(self.c, self.t, {'dir/old': sha(b'old')})['entries'][0]['action'], 'add')

@@ -9,20 +9,7 @@ from jsonschema import Draft202012Validator
 SCHEMA = Path(__file__).resolve().parent / 'schemas/blueprint.schema.json'
 
 
-def load(path):
-    def unique(pairs):
-        result = {}
-        for k, v in pairs:
-            if k in result:
-                raise ValueError(f'duplicate key: {k}')
-            result[k] = v
-        return result
-
-    def invalid(value):
-        raise ValueError(f'non-finite JSON: {value}')
-
-    return json.loads(Path(path).read_text(encoding='utf-8'),
-                      object_pairs_hook=unique, parse_constant=invalid)
+from forge_json import load
 
 
 def validate(candidate, baseline=None):

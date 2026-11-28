@@ -54,10 +54,22 @@ def plan(candidate, target, prior=None):
         prior = {}
     if not isinstance(prior, dict):
         raise ValueError('prior must be a path-to-SHA256 map')
+    prior_aliases = {}
+    prior_leaves = set()
     for name, value in prior.items():
-        path_parts(name)
+        parts = path_parts(name)
+        for i in range(1, len(parts) + 1):
+            prefix = '/'.join(parts[:i])
+            normalized = key(prefix)
+            if normalized in prior_aliases and prior_aliases[normalized] != prefix:
+                raise ValueError('ambiguous prior path: ' + name)
+            prior_aliases[normalized] = prefix
+        prior_leaves.add(key(name))
         if not isinstance(value, str) or not re.fullmatch('[0-9a-f]{64}', value):
             raise ValueError('invalid prior digest')
+    if any(any('/'.join(name.split('/')[:i]) in prior_leaves
+               for i in range(1, len(name.split('/')))) for name in prior_leaves):
+        raise ValueError('prior contains file/directory conflict')
     base = clean_head(t)
     tracked = {}
     for item in git(t, 'ls-tree', '-rz', base).split(b'\0'):
@@ -84,6 +96,12 @@ def plan(candidate, target, prior=None):
                 bad = True
             if i < len(parts) and prefix in tracked:
                 bad = True
+            if prior_aliases.get(key(prefix), prefix) != prefix:
+                bad = True
+            if i < len(parts) and key(prefix) in prior_leaves:
+                bad = True
+        if key(name) in prior_aliases and key(name) not in prior_leaves:
+            bad = True
         if name in tracked:
             mode, oid = tracked[name]
             if mode not in ('100644', '100755'):

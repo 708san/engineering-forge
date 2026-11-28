@@ -2,12 +2,12 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.18.0-preview.1（ChatGPT・Codex向け先行試用版。安定版ではない）。**
+**状態: v0.18.0-preview.2（ChatGPT・Codex向け先行試用版。安定版ではない）。**
 
 [リリース説明](RELEASE.md) ｜ [利用開始](START.md)
 
 ## 利用開始
-**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.1 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
+**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.2 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
 
 [初めて使う（ChatGPT・Codex共通）](bootstrap/quickstart.md) ｜ [実機試験手順](evaluation/first-use.md)
 

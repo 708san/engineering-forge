@@ -1,7 +1,7 @@
 name: Forge tests
 on:
   push:
-    branches: [main, 'feature/**', 'release/v0.18-preview']
+    branches: [main, 'feature/**', 'release/v0.18-preview.2']
   pull_request:
     branches: [main]
 permissions:
@@ -36,7 +36,7 @@ jobs:
 
   publish-preview:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/release/v0.18-preview' && github.repository == '708san/engineering-forge'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/release/v0.18-preview.2' && github.repository == '708san/engineering-forge'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -54,20 +54,20 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python -B forge.py pack --ref "$GITHUB_SHA" --output "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.1.zip"
-          python -m zipfile -t "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.1.zip"
+          python -B forge.py pack --ref "$GITHUB_SHA" --output "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.2.zip"
+          python -m zipfile -t "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.2.zip"
           cd "$RUNNER_TEMP"
-          sha256sum engineering-forge-v0.18.0-preview.1.zip > SHA256SUMS.txt
+          sha256sum engineering-forge-v0.18.0-preview.2.zip > SHA256SUMS.txt
       - name: Publish the fixed preview (never overwrite an existing tag)
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          tag=v0.18.0-preview.1
+          tag=v0.18.0-preview.2
           status=0
           git ls-remote --exit-code --tags origin "refs/tags/$tag" || status=$?
           test "$status" = 2
-          gh release create "$tag" "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.1.zip" "$RUNNER_TEMP/SHA256SUMS.txt" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --latest=false --title "Engineering Forge v0.18.0-preview.1" --notes-file RELEASE.md
+          gh release create "$tag" "$RUNNER_TEMP/engineering-forge-v0.18.0-preview.2.zip" "$RUNNER_TEMP/SHA256SUMS.txt" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --latest=false --title "Engineering Forge v0.18.0-preview.2" --notes-file RELEASE.md
           gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url,tagName,isPrerelease,isDraft,assets,targetCommitish
           test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --jq .object.sha)" = "$GITHUB_SHA"

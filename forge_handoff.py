@@ -11,15 +11,7 @@ FIELDS = {'project', 'forge_commit', 'target_commit', 'entrypoint', 'context',
           'next_actions', 'blockers'}
 
 
-def load(path):
-    def unique(pairs):
-        result = {}
-        for k, v in pairs:
-            if k in result:
-                raise ValueError(f'duplicate JSON key: {k}')
-            result[k] = v
-        return result
-    return json.loads(Path(path).read_text(encoding='utf-8'), object_pairs_hook=unique)
+from forge_json import load
 
 
 def nonempty(value):
