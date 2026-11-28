@@ -13,7 +13,7 @@ from forge_integrate import git
 ROOT = Path(__file__).resolve().parent
 # Curated public foundation assets only; no project contents, history or local secrets.
 REFERENCES = (
-    'README.md', 'RELEASE.md', 'START.md', 'requirements.md', 'detail.md',
+    'README.md', 'RELEASE.md', 'START.md', 'OPERATE.md', 'bootstrap/feedback.md', 'requirements.md', 'detail.md',
     'architect-v0.5.md', 'generative-architecture.md', 'evaluation.md',
     'evaluation-v0.5.md', 'bootstrap/contract.md', 'bootstrap/portable-project.md',
     'bootstrap/quickstart.md', 'bootstrap/handoff.md', 'bootstrap/integration.md',

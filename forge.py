@@ -14,6 +14,7 @@ COMMANDS = {
     'integrate': 'forge_integrate.py',
     'impact': 'forge_impact.py',
     'pack': 'forge_pack.py',
+    'check-package': 'forge_package_check.py',
     'agents': 'forge_agents.py',
     'progress': 'forge_progress.py',
     'records': 'forge_records.py',
