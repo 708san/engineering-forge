@@ -1,0 +1,343 @@
+[
+  {
+    "id": "ROLE-OWNER",
+    "type": "Role",
+    "revision": 1,
+    "title": "設計・実装責任",
+    "body": "設計・実装責任",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "mission": "ローカル試作",
+      "responsibilities": [
+        "仕様・統合"
+      ],
+      "knowledge_refs": [],
+      "decision_scope": [
+        "内部設計"
+      ],
+      "allowed_operations": [
+        "read",
+        "write-local"
+      ],
+      "input_contract": "構想",
+      "output_contract": "差分",
+      "verification": "受入基準",
+      "escalation": "保護変更は保留",
+      "stop_conditions": [
+        "予算超過"
+      ]
+    }
+  },
+  {
+    "id": "INTENT-01",
+    "type": "Intent",
+    "revision": 1,
+    "title": "端末内でファイルを変換したい",
+    "body": "端末内でファイルを変換したい",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "scope": "ローカル変換",
+      "protected": true,
+      "retention": "permitted"
+    }
+  },
+  {
+    "id": "REQ-01",
+    "type": "Requirement",
+    "revision": 1,
+    "title": "ファイル内容を外部送信しない",
+    "body": "ファイル内容を外部送信しない",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [
+      {
+        "kind": "derives_from",
+        "target_id": "INTENT-01"
+      }
+    ],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "priority": "mandatory",
+      "protected": true,
+      "conditions": "ネットワーク遮断時も変換",
+      "acceptance": [
+        {
+          "id": "AC-01",
+          "revision": 1
+        }
+      ],
+      "unresolved_reason": ""
+    }
+  },
+  {
+    "id": "AC-01",
+    "type": "AcceptanceCriterion",
+    "revision": 1,
+    "title": "通信なしで変換完了",
+    "body": "通信なしで変換完了",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "expected": "変換成功・ファイル送信なし",
+      "conditions": "通信遮断と通信観測",
+      "mandatory": true,
+      "method": "test"
+    }
+  },
+  {
+    "id": "ENV-01",
+    "type": "Environment",
+    "revision": 1,
+    "title": "ブラウザ試験環境",
+    "body": "ブラウザ試験環境",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "purpose": "検証",
+      "version": "未確認",
+      "capabilities": {
+        "browser": "unverified"
+      },
+      "verification": "未実施"
+    }
+  },
+  {
+    "id": "TEST-01",
+    "type": "Test",
+    "revision": 1,
+    "title": "ローカル変換検証",
+    "body": "ローカル変換検証",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [
+      {
+        "kind": "verifies",
+        "target_id": "AC-01"
+      }
+    ],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "criteria": [
+        {
+          "id": "AC-01",
+          "revision": 1
+        }
+      ],
+      "procedure": "変換結果と通信を確認",
+      "environment": {
+        "id": "ENV-01",
+        "revision": 1
+      }
+    }
+  },
+  {
+    "id": "BASE-01",
+    "type": "Baseline",
+    "revision": 1,
+    "title": "設計例の基準",
+    "body": "設計例の基準",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "composition": [
+        {
+          "id": "REQ-01",
+          "revision": 1
+        },
+        {
+          "id": "AC-01",
+          "revision": 1
+        }
+      ],
+      "source_commit": null,
+      "snapshot_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  {
+    "id": "TASK-01",
+    "type": "Task",
+    "revision": 1,
+    "title": "変換機能実装",
+    "body": "変換機能実装",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [
+      {
+        "kind": "implements",
+        "target_id": "REQ-01"
+      }
+    ],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "state": "proposed",
+      "scope": "変換処理",
+      "excluded": [
+        "外部通信"
+      ],
+      "acceptance": [
+        {
+          "id": "AC-01",
+          "revision": 1
+        }
+      ],
+      "budget": "1セッション",
+      "stop_conditions": [
+        "基準変更"
+      ],
+      "baseline": {
+        "id": "BASE-01",
+        "revision": 1
+      },
+      "allowed_operations": [
+        "write-local"
+      ],
+      "blocked_reason": ""
+    }
+  },
+  {
+    "id": "EVID-01",
+    "type": "Evidence",
+    "revision": 1,
+    "title": "未実施の検証",
+    "body": "未実施の検証",
+    "origin": {
+      "kind": "ai",
+      "reference": "synthetic-fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "test": {
+        "id": "TEST-01",
+        "revision": 1
+      },
+      "baseline": {
+        "id": "BASE-01",
+        "revision": 1
+      },
+      "environment": {
+        "id": "ENV-01",
+        "revision": 1
+      },
+      "result": "not_run",
+      "artifact_sha256": null,
+      "executor": "未実施",
+      "validity": "unverified"
+    }
+  },
+  {
+    "id": "MAP-01",
+    "type": "x.material.response-map",
+    "revision": 1,
+    "title": "応答マップ（架空値）",
+    "body": "形式検証専用の架空データ。測定結果ではない。",
+    "origin": {
+      "kind": "ai",
+      "reference": "fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "stimulus_unit": "N",
+      "response_unit": "mm",
+      "samples": [
+        {
+          "time_ms": 0,
+          "stimulus": 1,
+          "response": 2
+        }
+      ]
+    },
+    "extension_schema_ref": {
+      "type_id": "x.material.response-map",
+      "version": "1.0.0"
+    }
+  },
+  {
+    "id": "PRACTICE-LOCAL",
+    "type": "Practice",
+    "revision": 1,
+    "title": "刺激応答再生",
+    "body": "局所的な新規方法候補",
+    "origin": {
+      "kind": "ai",
+      "reference": "fixture"
+    },
+    "authority": "proposed",
+    "lifecycle": "active",
+    "relations": [],
+    "owner_role": "ROLE-OWNER",
+    "sensitivity": "internal",
+    "data": {
+      "scope": "試作",
+      "definition_ref": {
+        "origin": "project",
+        "id": "METHOD-REPLAY",
+        "version": "1.0.0"
+      },
+      "selection": "selected",
+      "mandatory": false,
+      "blocking": false,
+      "rationale": "時間応答を比較する",
+      "review_trigger": "予備試験後"
+    }
+  }
+]
