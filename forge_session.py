@@ -31,6 +31,7 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
     baseline_issues = []
     if baseline['lifecycle'] != 'active':
         baseline_issues.append('baseline_not_active')
+    pinned = {pair(r) for r in baseline['data']['composition']}
     computed = fingerprint(records, baseline)
     if computed != baseline['data']['snapshot_sha256']:
         baseline_issues.append('baseline_composition_digest_mismatch')
@@ -59,10 +60,12 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
             reports = [evidence_reports[pair(e)] for e in candidates]
             environment = records[pair(t['data']['environment'])]
             good = (bool(reports) and not any(e['review_required'] for e in reports)
-                    and environment['lifecycle'] == 'active')
+                    and environment['lifecycle'] == 'active'
+                    and pair(t) in pinned and pair(environment) in pinned)
             outcomes.append({'test': ref(t), 'evidence': [ref(e) for e in candidates],
+                             'test_and_environment_pinned': pair(t) in pinned and pair(environment) in pinned,
                              'assessment': 'reported_pass' if good else 'review_required'})
-        ok = (criterion['lifecycle'] == 'active' and bool(outcomes)
+        ok = (criterion['lifecycle'] == 'active' and cid in pinned and bool(outcomes)
               and all(t['assessment'] == 'reported_pass' for t in outcomes))
         return {'criterion': ref(criterion), 'expected': criterion['data']['expected'],
                 'conditions': criterion['data']['conditions'], 'tests': outcomes,
@@ -98,6 +101,9 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
             holds.append('task_operations_outside_role_declaration')
         if not checks:
             holds.append('no_completion_criteria')
+        if any(pair(c) not in pinned or records[pair(c)]['lifecycle'] != 'active'
+               for c in data['acceptance']):
+            holds.append('completion_criterion_not_active_and_pinned')
         if other_deps[id]:
             holds.append('nonactive_or_nontask_dependency_requires_review')
         if any((link['target_id'], link.get('target_revision',
@@ -108,6 +114,15 @@ def session(directory, manifest_path, *, observe_git=False, target=None):
             holds.append('task_dependency_not_recorded_done')
         if data['blocked_reason']:
             holds.append('recorded_blocked_reason')
+        for link in task['relations']:
+            if link['kind'] not in {'implements','satisfies','derives_from','governed_by'}:
+                continue
+            target = (records[(link['target_id'], link['target_revision'])]
+                      if 'target_revision' in link else active[link['target_id']])
+            if target['type'] in {'Intent','Goal','Principle','Requirement','Constraint','Policy'} and (
+                    pair(target) not in pinned or target['lifecycle'] != 'active'):
+                holds.append('linked_normative_record_not_active_and_pinned')
+                break
         state = data['state']
         if state == 'done':
             assessment = ('recorded_done' if not holds and

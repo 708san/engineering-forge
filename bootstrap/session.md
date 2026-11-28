@@ -21,3 +21,5 @@
 ## 固定レコードの内容指紋
 `python3 -B forge.py baseline PROJECT_ROOT RELATIVE_MANIFEST.json` はBaseline.compositionの版付き参照が指すレコードをID・版でソートし、UTF-8のキー順固定・空白なしJSON（encoding=forge-record-composition-v1）としてSHA-256を計算する。空、重複、自己参照、欠落は拒否。既存のsnapshot_sha256に対し内容一致を表示する。未一致は終了2、構造エラーは1。旧fixtureの0埋めは意図的な未検証例であり合格としない。sessionも未一致を保留とする。正式な基準候補を作る際のみ計算値を保存し、既存基準を変更検出の回避目的で再ハッシュしない。独立した旧基準とのguard比較は引き続き必要。
 指紋は列挙されたレコードのみを対象とし、全ツリー、推移的参照、外部実行環境、署名、承認を証明しない。Pythonの正規化方式であり他言語共通の標準正規化を保証しない。証跡の対象コード版と証跡の保存版は分ける。
+
+作業の受入条件と直接紐付く規範的レコード（Intent/Goal/Principle/Requirement/Constraint/Policy）はactiveかつ現在のBaseline.compositionに固定されている必要がある。完了の記録判定には関連するactiveなTest・Environmentも基準に固定する。テスト手順だけを書き換えて以前の証跡を有効扱いしない。まだ試験がない提案タスクは受入条件が固定済みなら設計・実装候補になり得る。固定集合の網羅性や意味は別途レビューする。
