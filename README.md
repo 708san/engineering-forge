@@ -2,12 +2,12 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.18.0-preview.4（ChatGPT・Codex向け個人実運用評価版。安定版ではない）。**
+**状態: v0.18.0-preview.5（ChatGPT・Codex向け個人実運用評価版。安定版ではない）。**
 
-[実運用ガイド](OPERATE.md) ｜ [リリース説明](RELEASE.md) ｜ [利用開始](START.md)
+[4場面の使い方](bootstrap/use-cases.md) ｜ [実運用ガイド](OPERATE.md) ｜ [リリース説明](RELEASE.md) ｜ [利用開始](START.md)
 
 ## 利用開始
-**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.4 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
+**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.5 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
 
 [初めて使う（ChatGPT・Codex共通）](bootstrap/quickstart.md) ｜ [実機試験手順](evaluation/first-use.md)
 
@@ -53,7 +53,7 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 `python3 forge.py doctor` でローカル環境の観測結果を取得し、`python3 forge.py --help` で補助コマンドを確認できる。実行可能ファイルが見つかったことと、実際の利用権限・Skills読込・準備完了は別であり、doctorは後者を未検証と表示する。GitHub ActionsはLinux/macOS・Python 3.11/3.13の自動試験設定。
 
 ## 配布・知識の再利用
-[任意の共通プラグイン配布](bootstrap/distribution.md)（`python3 -B forge.py pack --ref HEAD --output engineering-forge.zip`）と[知識の再利用](knowledge/README.md)を追加。パッケージ生成はインストールや公開を意味しない。既存のURL参照も利用可能。v0.10のCI成功ログと取得コードに矛盾を発見し検証器の差集合演算を修正した。原因は未解明。
+[任意の共通プラグイン配布](bootstrap/distribution.md)（`python3 -B forge.py pack --ref HEAD --output engineering-forge.zip`）と[知識の再利用](knowledge/README.md)を追加。パッケージ生成はインストールや公開を意味しない。既存のURL参照も利用可能。v0.11初期の差集合演算の回帰は修正済み。v0.10のコードとCIの矛盾という以前の記述はコードの読み違いであり訂正した（audit/implementation-v0.11.md）。
 
 [実行環境別エージェント候補](bootstrap/agent-adapters.md) を追加。`forge.py agents BLUEPRINT.json AGENT-SPEC.json` はAIが考案した役割をCodex用TOMLとChatGPT向け作業契約へ変換する（任意）。生成のみで起動・権限付与は行わない。
 

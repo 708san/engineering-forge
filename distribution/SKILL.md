@@ -24,3 +24,4 @@ description: 新しいプロダクトの共同設計、開発体制の生成、�
 重要な設計判断が抽象的になった場合は references/knowledge/design-reasoning.md を必要時参照し、固有の現象・成果・方法・検証を結び付ける。公開校正例は参考であり、テンプレートではない。
 
 日常の開発とフィードバックは references/OPERATE.md および references/bootstrap/feedback.md。対象にこの基盤の全資料をコピーする必要はない。
+利用者の開始状況に応じた指示例は references/bootstrap/use-cases.md。固定分類として適用しない。
