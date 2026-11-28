@@ -13,6 +13,7 @@ COMMANDS = {
     'handoff': 'forge_handoff.py',
     'integrate': 'forge_integrate.py',
     'impact': 'forge_impact.py',
+    'pack': 'forge_pack.py',
 }
 
 

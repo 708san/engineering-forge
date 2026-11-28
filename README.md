@@ -2,7 +2,7 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.10-dev（開発中、正式リリース・受入未完了）。**
+**状態: v0.11-dev（開発中、正式リリース・受入未完了）。**
 
 ## 利用開始
 [初めて使う（ChatGPT・Codex共通）](bootstrap/quickstart.md) ｜ [実機試験手順](evaluation/first-use.md)
@@ -47,3 +47,6 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## 共通コマンド（任意）
 `python3 forge.py doctor` でローカル環境の観測結果を取得し、`python3 forge.py --help` で補助コマンドを確認できる。実行可能ファイルが見つかったことと、実際の利用権限・Skills読込・準備完了は別であり、doctorは後者を未検証と表示する。GitHub ActionsはLinux/macOS・Python 3.11/3.13の自動試験設定。
+
+## 配布・知識の再利用
+[任意の共通プラグイン配布](bootstrap/distribution.md)（`python3 -B forge.py pack --ref HEAD --output engineering-forge.zip`）と[知識の再利用](knowledge/README.md)を追加。パッケージ生成はインストールや公開を意味しない。既存のURL参照も利用可能。v0.10のCI成功ログと取得コードに矛盾を発見し検証器の差集合演算を修正した。原因は未解明。

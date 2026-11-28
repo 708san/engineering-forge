@@ -60,6 +60,19 @@ class ValidationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load(p)
 
+    def test_valid_collaboration(self):
+        rid = self.c['roles'][0]['id']
+        self.c['collaborations'] = [{'from_role': rid, 'to_role': rid, 'contract': 'self-review'}]
+        self.assertEqual(validate(self.c, self.b), [])
+
+    def test_unknown_collaboration_role(self):
+        self.c['collaborations'] = [{'from_role': self.c['roles'][0]['id'],
+                                    'to_role': 'ROLE-MISSING', 'contract': 'review'}]
+        self.assertIn('invalid collaboration reference', validate(self.c, self.b))
+
+    def test_valid_method_artifact_reference(self):
+        self.assertTrue(self.c['methods'][0]['artifact_ids'])
+        self.assertEqual(validate(self.c, self.b), [])
 
 if __name__ == '__main__':
     unittest.main()

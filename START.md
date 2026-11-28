@@ -1,4 +1,4 @@
-# Engineering Forge — 利用開始入口（v0.10-dev）
+# Engineering Forge — 利用開始入口（v0.11-dev）
 この文書は設計試用の入口。URL参照だけでインストール・実行・承認が成立するわけではない。
 
 ## AIへの指示例
@@ -23,3 +23,5 @@ ChatGPT/Codex 共通の開始・生成・継続開発手順は `bootstrap/portab
 ローカルGitが利用でき、実際の書き込み許可がある場合は `bootstrap/integration.md` に従って新規統合ブランチを作成できる。継続開発で変更の影響を確認するときは `bootstrap/change-impact.md` を任意利用する。ツールがない場合も仕様・候補・次の作業を渡し、実施済みと偽らない。
 
 利用者向けの簡潔な入口は `bootstrap/quickstart.md`。AIによる新規案件の試用・別セッション評価は `evaluation/first-use.md` を参照（未実施）。
+
+利用開始には `bootstrap/distribution.md` の任意プラグイン方式もある。知識の再利用は `knowledge/README.md` に従い、適用条件や反例から必要な場合だけ採用する。
