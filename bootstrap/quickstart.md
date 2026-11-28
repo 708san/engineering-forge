@@ -1,4 +1,4 @@
-# 初めて使う（v0.11-dev、試用版）
+# 初めて使う（v0.12-dev、試用版）
 ## ChatGPTでもCodexでも同じ
 人間が入力するのは基本的に構想・希望・許可範囲だけ。例えば:
 > https://github.com/708san/engineering-forge の START.md を読み、私と共同で以下のプロダクトの要件・開発体制を設計し、合意済みの範囲で開発を開始してください。構想: ...
@@ -20,3 +20,5 @@ GitHub連携や取得機能で基盤・対象を読む。通常の読み取り�
 共通コマンド `python3 forge.py doctor --target TARGET`（対象未作成時は --target なし）でローカルの存在確認を行える。`python3 forge.py --help` から preview / validate / handoff / integrate / impact を呼べる。各コマンドの引数は元のスクリプトと同じ。ネットワーク、GitHub書き込み、ネイティブSkills、操作承認は別途確認する。doctorの終了0は観測出力成功であり、開発準備完了ではない。
 
 URLを毎回渡さずに済む任意のskill-onlyプラグイン候補も用意する。`bootstrap/distribution.md`。実機インストール・読込は未検証。
+
+タスクの依存関係や証跡の状態が複雑な場合は任意の progress コマンドを利用できる。文書が増えること自体を目的にしない。

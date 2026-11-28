@@ -1,0 +1,51 @@
+{
+  "project": "Illustrative local project",
+  "tasks": [
+    {
+      "id": "T-1",
+      "purpose": "Define observable ordering rules",
+      "state": "done",
+      "parent": null,
+      "depends_on": [],
+      "checks": [
+        "boundary-review"
+      ],
+      "owner": "project designer"
+    },
+    {
+      "id": "T-2",
+      "purpose": "Implement partial-order representation",
+      "state": "proposed",
+      "parent": null,
+      "depends_on": [
+        "T-1"
+      ],
+      "checks": [
+        "overlap-invariants"
+      ],
+      "owner": "developer"
+    },
+    {
+      "id": "T-3",
+      "purpose": "Review local help text",
+      "state": "ready",
+      "parent": null,
+      "depends_on": [],
+      "checks": [
+        "clarity"
+      ],
+      "owner": "developer"
+    }
+  ],
+  "evidence": [
+    {
+      "task_id": "T-1",
+      "check": "boundary-review",
+      "revision": "synthetic-r1",
+      "verdict": "pass",
+      "environment": "illustrative only",
+      "procedure": "example of reviewing boundary conditions",
+      "reference": "not a real execution log"
+    }
+  ]
+}

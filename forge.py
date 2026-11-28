@@ -15,6 +15,7 @@ COMMANDS = {
     'impact': 'forge_impact.py',
     'pack': 'forge_pack.py',
     'agents': 'forge_agents.py',
+    'progress': 'forge_progress.py',
 }
 
 

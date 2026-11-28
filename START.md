@@ -1,4 +1,4 @@
-# Engineering Forge — 利用開始入口（v0.11-dev）
+# Engineering Forge — 利用開始入口（v0.12-dev）
 この文書は設計試用の入口。URL参照だけでインストール・実行・承認が成立するわけではない。
 
 ## AIへの指示例
@@ -27,3 +27,5 @@ ChatGPT/Codex 共通の開始・生成・継続開発手順は `bootstrap/portab
 利用開始には `bootstrap/distribution.md` の任意プラグイン方式もある。知識の再利用は `knowledge/README.md` に従い、適用条件や反例から必要な場合だけ採用する。
 
 必要な場合だけプロジェクト固有のエージェント設定を生成する。`bootstrap/agent-adapters.md` のCodex設定とChatGPT向け作業契約への変換を任意利用できる。
+
+タスク・依存関係・完了条件・版別証跡の整合性は必要に応じて `bootstrap/progress.md` を使う。簡易案件では手動運用でもよい。検証証跡の真正性と判断権限を別途確認する。
