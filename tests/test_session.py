@@ -273,8 +273,8 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(r['next_candidates'],[])
 
     def test_rejected_task_not_work_candidate(self):
-        self.get('TASK-01')['authority']='rejected'
         self.add_task()
+        self.get('TASK-01')['authority']='rejected'
         r=self.run_session()
         self.assertIn('task_rejected',self.task(r)['holds'])
         self.assertEqual(r['next_candidates'],['TASK-02'])
