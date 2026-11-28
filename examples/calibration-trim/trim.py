@@ -8,7 +8,10 @@ import sys
 def trim(source, destination):
     data = Path(source).read_bytes()
     data.decode('utf-8')  # Reject unsupported encodings before creating output.
-    cleaned = re.sub(rb'[ \t]+(?=\r\n|\r|\n|\Z)', b'', data)
+    parts = re.split(rb'(\r\n|\r|\n)', data)
+    for i in range(0, len(parts), 2):
+        parts[i] = parts[i].rstrip(b' \t')
+    cleaned = b''.join(parts)
     with Path(destination).open('xb') as f:
         f.write(cleaned)
 

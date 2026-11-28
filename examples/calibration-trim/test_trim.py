@@ -55,3 +55,7 @@ class TrimTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             trim(self.src, self.dst)
         self.assertEqual(self.src.read_bytes(), b'input ')
+
+    def test_long_internal_whitespace_preserved(self):
+        spaces = b' ' * 100000
+        self.check_conversion(b'a' + spaces + b'b  \n', b'a' + spaces + b'b\n')
