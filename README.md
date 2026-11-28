@@ -2,7 +2,7 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.16-dev（開発中、正式リリース・受入未完了）。**
+**状態: v0.17-dev（開発中、正式リリース・受入未完了）。**
 
 ## 利用開始
 **通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 開発版を使う場合は変更ブランチまたは固定コミットを指定する。mainは未統合。
@@ -74,3 +74,5 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 [正式受入索引](evaluation/acceptance-index.md) は従来56条件と導入専用8条件を区別する。単体試験と正式受入、実機検証、独立比較を別扱いにする。未実施の条件は合格としない。
 
 [正式版への残作業・独立監査の入口](evaluation/release-readiness.md)。
+
+[複合案件の公開校正試作 CAL-02](examples/calibration-hearing/AGENTS.md) と [自己適用記録](evaluation/calibration-hearing-observation.md)。実認証・ネットワーク・個人情報処理を備えた製品ではない。
