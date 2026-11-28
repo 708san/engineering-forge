@@ -1,6 +1,7 @@
 import copy
 import unittest
-from forge_trial import assess,digest
+from unittest.mock import patch
+from forge_trial import assess,digest,review
 
 
 class TrialTests(unittest.TestCase):
@@ -66,3 +67,23 @@ class TrialTests(unittest.TestCase):
         self.o['measurements'][0]['candidate']=True
         with self.assertRaises(ValueError):
             self.run_trial()
+
+    def test_raw_observations_retained(self):
+        r=self.run_trial()['metrics'][1]
+        self.assertEqual((r['baseline'],r['candidate'],r['baseline_ref'],r['candidate_ref']),(30,20,'c','d'))
+
+    @patch('forge_trial.compare')
+    def test_guard_prevents_positive_assessment(self, compare):
+        compare.return_value={'project_id':self.p['project_id'],'review_required':True}
+        r=review(self.p,self.o,self.h,'old','manifest','new','manifest')
+        self.assertEqual(r['assessment'],'protected_or_governance_review_required')
+        self.assertEqual(r['metric_assessment'],'candidate_for_review')
+        self.assertFalse(r['adopted'])
+
+    @patch('forge_trial.compare')
+    def test_stop_not_hidden_by_guard(self, compare):
+        compare.return_value={'project_id':self.p['project_id'],'review_required':True}
+        self.o['stop_observations']=['unsafe trial']
+        r=review(self.p,self.o,self.h,'old','manifest','new','manifest')
+        self.assertEqual(r['assessment'],'stop_or_rework')
+        self.assertTrue(r['record_review_required'])

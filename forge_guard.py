@@ -87,12 +87,14 @@ def compare(before_dir, before_manifest, after_dir, after_manifest):
             pinned_review.append(dict(id=k[0],revision=k[1]))
     history_review = []
     for k, r in sorted(old.items()):
-        if r['lifecycle'] == 'active' and r['type'] not in {'Evidence','Finding','Change','Decision','Release','Incident','Baseline'}:
+        if r['lifecycle'] == 'active' and r['type'] not in {'Evidence','Finding','Test','Change','Decision','Release','Incident','Baseline'}:
             continue
         n = new.get(k)
         if n is None or ({x:v for x,v in r.items() if x != 'lifecycle'} !=
                          {x:v for x,v in n.items() if x != 'lifecycle'}):
             history_review.append(dict(id=k[0],revision=k[1],reason='removed_or_rewritten'))
+        elif r['type'] in {'Evidence','Finding','Test'} and r['lifecycle'] == 'active' and n['lifecycle'] != 'active':
+            history_review.append(dict(id=k[0],revision=k[1],reason='verification_record_deactivated'))
         elif r['lifecycle'] != 'active' and n['lifecycle'] == 'active':
             history_review.append(dict(id=k[0],revision=k[1],reason='historical_revision_reactivated'))
     # Extensions can evolve by adding versions. Redefining/removing an

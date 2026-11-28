@@ -74,7 +74,9 @@ def assess(plan, observations, *, expected_plan_digest):
                 result='improved'
             else:
                 result='within_tolerance'
-        rows.append(dict(id=id,unit=m['unit'],required=m['required'],improvement=improvement,result=result))
+        rows.append(dict(id=id,unit=m['unit'],required=m['required'],improvement=improvement,result=result,
+                         baseline=o['baseline'] if o else None, candidate=o['candidate'] if o else None,
+                         baseline_ref=o['baseline_ref'] if o else None, candidate_ref=o['candidate_ref'] if o else None))
     if observations['stop_observations'] or any(r['result']=='regression' for r in rows):
         assessment='stop_or_rework'
     elif any(r['required'] and r['result']=='unmeasured' for r in rows):
@@ -97,7 +99,8 @@ def review(plan, observations, expected_plan_digest, baseline_dir, baseline_mani
         raise ValueError('trial and record project mismatch')
     report['record_guard']=guard
     report['metric_assessment']=report['assessment']
-    if guard['review_required']:
+    report['record_review_required']=guard['review_required']
+    if guard['review_required'] and report['assessment'] != 'stop_or_rework':
         report['assessment']='protected_or_governance_review_required'
     return report
 

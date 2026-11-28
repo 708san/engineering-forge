@@ -140,6 +140,16 @@ class GuardTests(unittest.TestCase):
         self.records=[r for r in self.records if r['id']!='EVID-01']
         self.assertTrue(self.run_guard()['history_review'])
 
-    def test_evidence_retirement_without_rewriting(self):
+    def test_evidence_retirement_requires_review(self):
         self.record('EVID-01')['lifecycle']='retired'
-        self.assertFalse(self.run_guard()['history_review'])
+        self.assertEqual(self.run_guard()['history_review'][0]['reason'],'verification_record_deactivated')
+
+    def test_active_test_retirement_requires_review(self):
+        self.record('TEST-01')['lifecycle']='retired'
+        r=self.run_guard()
+        self.assertTrue(any(x['id']=='TEST-01' and x['reason']=='verification_record_deactivated'
+                            for x in r['history_review']))
+
+    def test_active_test_rewrite_requires_review_even_if_unpinned(self):
+        self.record('TEST-01')['data']['procedure']='skip verification'
+        self.assertTrue(any(x['id']=='TEST-01' for x in self.run_guard()['history_review']))
