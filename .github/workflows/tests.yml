@@ -32,3 +32,4 @@ jobs:
       - run: python -B forge.py pack --ref HEAD --output "$RUNNER_TEMP/engineering-forge.zip"
       - run: python -B forge.py progress examples/progress-ledger.json --revision synthetic-r1
       - run: python -B forge.py records . fixtures/project.json
+      - run: python -B -m unittest discover -s examples/calibration-trim -v

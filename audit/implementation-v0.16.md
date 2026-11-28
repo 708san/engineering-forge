@@ -2,3 +2,5 @@
 対象親 df6b1642b62eba9bee634ccbb44134833821f794。CI 46090848867 はLinux2環境成功、macOS2環境失敗。job 140811165097 のログでは177件中 test_validated_record_source_read_once の比較が 0 != 1。forge_preview.root はパスをresolveする一方、試験は未正規化のtempパスと比較していた。両辺をresolveして比較する。macOS固有のパス表現差が原因という仮説は修正後CIで確認する。
 初期入口を必要時参照方式へ整理。正式受入56条件の正本からケース・期待成果を抽出し、bootstrap独自8条件のID衝突をBOOT-01–08として解消（意味変更なし）。合格を付与していない。パッケージにも索引を同梱する。
 実機CodexはPATH上になし、Git直接取得はDNS失敗。GitHub連携で作業。独立AI・受入・比較試験、履歴の完全移行、ライセンス・公開配布判断は未完。main未統合。正式要求の本文は変更しない。
+
+CAL-03公開校正の自己適用を実施。三ファイルの最小構成でローカル8/8とCLI変換・上書き拒否を実測。evaluation/calibration-trim-observation.md に詳細。比較評価・独立性は未実証。基盤の自動試験には試作8件を別ステップとして追加。
