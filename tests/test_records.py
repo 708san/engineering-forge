@@ -177,3 +177,21 @@ class RecordTests(unittest.TestCase):
         self.record('EVID-01')['data']['result'] = 'pass'
         self.save()
         self.assertTrue(inspect(self.p,self.m)['evidence'][0]['review_required'])
+
+    def test_current_nonpass_requires_review(self):
+        self.record('EVID-01')['data']['validity'] = 'current'
+        self.save()
+        self.assertTrue(inspect(self.p,self.m)['evidence'][0]['review_required'])
+
+    def test_current_pass_without_artifact_requires_review(self):
+        data = self.record('EVID-01')['data']
+        data.update(validity='current', result='pass', artifact_sha256=None)
+        self.save()
+        self.assertTrue(inspect(self.p,self.m)['evidence'][0]['review_required'])
+
+    def test_reported_pass_never_authenticates_evidence(self):
+        data = self.record('EVID-01')['data']
+        data.update(validity='current', result='pass', artifact_sha256='a' * 64)
+        self.save()
+        observation = inspect(self.p,self.m)['evidence'][0]
+        self.assertFalse(observation['authenticity_verified'])

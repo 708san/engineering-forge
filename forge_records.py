@@ -1,6 +1,5 @@
 """Inspect project records and local declarative extensions. Never infer approval or execute payloads."""
 import argparse
-from collections import defaultdict
 import hashlib
 import json
 from pathlib import Path
@@ -197,7 +196,8 @@ def inspect(directory, manifest):
             observed_baseline = resolve_ref(d['baseline'], 'Baseline')
             test = records[resolve_ref(d['test'], 'Test')]
             review = (observed_baseline != baseline or d['validity'] != 'current'
-                      or d['environment'] != test['data']['environment'])
+                      or d['environment'] != test['data']['environment']
+                      or d['result'] != 'pass' or d['artifact_sha256'] is None)
             evidence.append(dict(id=r['id'], revision=r['revision'],
                                  reported_result=d['result'], review_required=review,
                                  authenticity_verified=False))
