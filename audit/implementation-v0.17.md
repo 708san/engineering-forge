@@ -1,0 +1,5 @@
+# v0.17-dev 自己適用・検証記録
+親 f209212205698ddb44ca5fc2675f52f31315ed4f のCI 46115277544 は4環境成功。CAL-02の公開自己適用試作を追加。状態遷移と公開/非公開の分離に特化した15件の試作試験を独立ディレクトリで実行する基盤回帰試験1件を追加。最新版の実行結果は新しいCIを確認する。実認証・永続化・同時実行・ネットワーク・完全削除の主張なし。独立AI・実機・比較・正式受入は未実施。main未統合。外部リポジトリ未変更。
+自己監査で、authority=rejected のレコードを候補/完了根拠に使う余地を発見。sessionに拒否ラベルの保留を追加し、guardに承認/委任ラベルの変更検出を追加。9回帰試験（session6、guard3）。承認の認証・全ての推移的依存の確認は行わない。全178+9=187件の基盤試験を想定し、最終CIで確認する。
+
+CI 46115505025 for 8060b83 succeeded on all four environments, including the standalone CAL-02 subprocess. Follow-up test correction: create an independent proposed task before rejecting TASK-01 so the test helper does not copy the rejected label. No production logic weakened. Final CI must be checked separately.

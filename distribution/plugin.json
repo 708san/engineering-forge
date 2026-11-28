@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-forge",
+  "version": "0.18.0",
+  "description": "Preview candidate for ChatGPT and Codex: co-design, build and evolve project-specific engineering systems."
+}

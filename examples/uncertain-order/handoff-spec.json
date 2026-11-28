@@ -1,0 +1,9 @@
+{
+  "project": "Uncertain Order (synthetic demonstration)",
+  "forge_commit": "11ad1948553a733bce0d6e0490b4abef4b5e3f90",
+  "target_commit": null,
+  "entrypoint": "AGENTS.md",
+  "context": ["AGENTS.md", "PURPOSE.md", "order.py", "test_order.py", "handoff-spec.json"],
+  "next_actions": ["Review local requirements and run prototype tests", "Design a partial-order representation without inventing total order"],
+  "blockers": ["Real clock calibration and independent review are not verified"]
+}

@@ -1,0 +1,15 @@
+{
+  "project_id": "PROJECT-EXAMPLE",
+  "intent_ref": "INTENT-01",
+  "outcomes": [
+    {
+      "id": "OUT-SYNC",
+      "origin": "プロダクトの発意から提案",
+      "expectation": "刺激と応答の時間対応を検証可能にする",
+      "condition": "同じ刺激軌跡と機器条件",
+      "due_before": "実機適合の主張",
+      "verification": "反復観測と時間ずれの計測。閾値は未決定",
+      "mandatory": true
+    }
+  ]
+}
