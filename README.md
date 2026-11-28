@@ -2,12 +2,12 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.18.0-preview.2（ChatGPT・Codex向け先行試用版。安定版ではない）。**
+**状態: v0.18.0-preview.3（ChatGPT・Codex向け先行試用版。安定版ではない）。**
 
 [リリース説明](RELEASE.md) ｜ [利用開始](START.md)
 
 ## 利用開始
-**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.2 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
+**通常はURLと構想だけでよい。補助コマンドや共通レコードの採用は任意。** 先行試用版はタグ v0.18.0-preview.3 または対応する固定コミットを指定する。mainは独立レビュー前のため未統合。
 
 [初めて使う（ChatGPT・Codex共通）](bootstrap/quickstart.md) ｜ [実機試験手順](evaluation/first-use.md)
 
@@ -78,3 +78,5 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 [正式版への残作業・独立監査の入口](evaluation/release-readiness.md)。
 
 [複合案件の公開校正試作 CAL-02](examples/calibration-hearing/AGENTS.md) と [自己適用記録](evaluation/calibration-hearing-observation.md)。実認証・ネットワーク・個人情報処理を備えた製品ではない。
+
+[開発方法を考案するための判断資料](knowledge/design-reasoning.md) と [公開設計校正例](evaluation/design-worked-example.md) を追加。8 Skillsを具体化した。方法・技術・役割の固定は行わない。AIの性能改善はまだ比較実験で実証していない。

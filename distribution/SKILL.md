@@ -20,3 +20,5 @@ description: 新しいプロダクトの共同設計、開発体制の生成、�
 共通レコードを正本にしている場合は references/bootstrap/session.md から作業契約・前提・証跡を導出する。候補を許可済みとみなさない。小規模案件に強制しない。
 
 開発体制の改善は references/bootstrap/adaptation.md に従い、事前条件と観測を比較する。不要な機構の削減も選択肢に含める。
+
+重要な設計判断が抽象的になった場合は references/knowledge/design-reasoning.md を必要時参照し、固有の現象・成果・方法・検証を結び付ける。公開校正例は参考であり、テンプレートではない。

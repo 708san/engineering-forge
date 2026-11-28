@@ -23,3 +23,6 @@ v0.4の設計検査は候補自身のmandatory成果しか参照しない。そ�
 - Anthropic Demystifying evals for AI agents https://www.anthropic.com/research/demystifying-evals-for-ai-agents — 成果状態、過程、評価者の区別。
 - ADAS https://arxiv.org/abs/2408.08435 ; AFlow https://arxiv.org/abs/2410.10762 — 生成的な構造探索。本基盤での効果は未検証。
 - Kapoor et al. AI Agents That Matter https://arxiv.org/abs/2407.01502 — 費用・精度と未使用評価集合。
+
+## 実践的な判断資料（preview.3）
+設計・調査・品質の具体化には `knowledge/design-reasoning.md` を任意参照する。公開校正 `evaluation/design-worked-example.md` は判断の例であり、固定された技術や組織を再利用する義務はない。

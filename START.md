@@ -1,4 +1,4 @@
-# Engineering Forge — 利用開始入口（v0.18.0-preview.2）
+# Engineering Forge — 利用開始入口（v0.18.0-preview.3）
 利用者がこの基盤を使うよう依頼した範囲でのみ、作業ガイドとして参照する。URL参照や記録上の承認は、実際の操作権限・インストール・実行・採用を意味しない。
 
 ## 最初に読む
@@ -15,6 +15,7 @@
 ## 必要になったときの参照
 | 目的 | 資料 |
 |---|---|
+| 設計判断の具体化（必要時） | knowledge/design-reasoning.md |
 | 利用者向け開始手順・環境確認 | bootstrap/quickstart.md |
 | 導入差分・安全な統合候補 | bootstrap/integration.md |
 | エージェント設定・配布 | bootstrap/agent-adapters.md / bootstrap/distribution.md |
