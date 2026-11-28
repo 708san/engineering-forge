@@ -16,6 +16,7 @@ COMMANDS = {
     'pack': 'forge_pack.py',
     'agents': 'forge_agents.py',
     'progress': 'forge_progress.py',
+    'records': 'forge_records.py',
 }
 
 

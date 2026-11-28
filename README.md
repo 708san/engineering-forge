@@ -2,7 +2,7 @@
 
 AIがプロダクト固有の開発体制を設計・生成・改善する開発基盤。従来の設計名は Development Harness。
 
-**状態: v0.12-dev（開発中、正式リリース・受入未完了）。**
+**状態: v0.13-dev（開発中、正式リリース・受入未完了）。**
 
 ## 利用開始
 [初めて使う（ChatGPT・Codex共通）](bootstrap/quickstart.md) ｜ [実機試験手順](evaluation/first-use.md)
@@ -55,3 +55,6 @@ Python 3.11以上の環境で、仮想環境内に依存を導入する。
 
 ## タスクと証跡の整合性・評価
 [進捗・証跡検査](bootstrap/progress.md)（forge.py progress）は宣言した依存関係と版別の観測記録を照合する。承認や実行の証明ではない。比較評価用の[公開校正ケース](evaluation/calibration-v0.12.md)と[試行記録契約](evaluation/run-record.md)を追加（正式比較未実施）。
+
+## 共通記録とプロジェクト固有形式
+[共通情報モデル](bootstrap/records.md)（forge.py records）は復元した29種の旧仕様と任意の名前空間付き拡張を検査する。既存の形式を無理に置き換えず必要な場合だけ利用する。未知拡張は保持し未検証とする。

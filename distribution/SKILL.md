@@ -14,3 +14,5 @@ description: 新しいプロダクトの共同設計、開発体制の生成、�
 複数担当を設計した場合は references/bootstrap/agent-adapters.md を参照し、必要な場合だけ対象の環境に対応した設定候補を作る。
 
 タスク・完了条件・版別証跡が複雑なら references/bootstrap/progress.md を利用する。構造検査は証跡の真正性や操作の許可を保証しない。
+
+必要に応じて references/bootstrap/records.md の共通記録・独自形式を参照する。29種すべての記録を作成する必要はない。

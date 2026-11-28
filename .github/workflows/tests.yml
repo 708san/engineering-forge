@@ -31,3 +31,4 @@ jobs:
       - run: python -B forge_handoff.py verify examples/uncertain-order examples/uncertain-order/handoff-manifest.json
       - run: python -B forge.py pack --ref HEAD --output "$RUNNER_TEMP/engineering-forge.zip"
       - run: python -B forge.py progress examples/progress-ledger.json --revision synthetic-r1
+      - run: python -B forge.py records . fixtures/project.json
